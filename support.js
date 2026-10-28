@@ -1,5 +1,89 @@
-// GENERATED from dc-runtime/src/*.ts - do not edit. Rebuild with `bun build.ts` (see the package README for the source-only recipe).
-"use strict";(()=>{var Rt=Object.defineProperty,Mt=(t,n,e)=>n in t?Rt(t,n,{enumerable:!0,configurable:!0,writable:!0,value:e}):t[n]=e,T=(t,n,e)=>Mt(t,typeof n!="symbol"?n+"":n,e);function L(){const t=window.React;if(!t)throw new Error("dc-runtime: window.React is not available yet");return t}function Tt(){const t=window.ReactDOM;if(!t)throw new Error("dc-runtime: window.ReactDOM is not available yet");return t}var A=((...t)=>L().createElement(...t));function Lt(t){const n=t.querySelector("x-dc");if(!n)return null;const e=t.querySelector("script[data-dc-script]"),{props:r,preview:o}=B(e?.getAttribute("data-props")??null);return{template:n.innerHTML,js:e&&e.textContent||"",props:r,preview:o}}function tt(t){const n=/<x-dc(?:\s[^>]*)?>/.exec(t);if(!n)return null;const e=t.lastIndexOf("</x-dc>");if(e===-1||e<n.index)return null;const r=t.slice(n.index+n[0].length,e),s=new DOMParser().parseFromString(t,"text/html").querySelector("script[data-dc-script]"),{props:i,preview:l}=B(s?.getAttribute("data-props")??null);return{template:r,js:s&&s.textContent||"",props:i,preview:l}}function B(t){if(!t)return{props:null,preview:null};let n;try{n=JSON.parse(t)}catch{return{props:null,preview:null}}if(!n||typeof n!="object"||Array.isArray(n))return{props:null,preview:null};const e=n,r=e.$preview&&typeof e.$preview=="object"?e.$preview:null,o={};for(const s of Object.keys(e))s[0]!=="$"&&(o[s]=e[s]);return{props:Object.keys(o).length?o:null,preview:r}}function Pt(t){let n=t||"";try{n=decodeURIComponent(n)}catch{}return(n.split("/").pop()||"Root").replace(/\.dc\.html$|\.html?$/,"")||"Root"}var Dt=`
+// GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
+"use strict";
+(() => {
+  var __defProp = Object.defineProperty;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+
+  // src/react.ts
+  function getReact() {
+    const R = window.React;
+    if (!R) throw new Error("dc-runtime: window.React is not available yet");
+    return R;
+  }
+  function getReactDOM() {
+    const RD = window.ReactDOM;
+    if (!RD) throw new Error("dc-runtime: window.ReactDOM is not available yet");
+    return RD;
+  }
+  var h = ((...args) => getReact().createElement(
+    ...args
+  ));
+
+  // src/parse.ts
+  function parseDcDocument(doc) {
+    const dc = doc.querySelector("x-dc");
+    if (!dc) return null;
+    const scriptEl = doc.querySelector("script[data-dc-script]");
+    const { props, preview } = parseDataProps(
+      scriptEl?.getAttribute("data-props") ?? null
+    );
+    return {
+      template: dc.innerHTML,
+      js: scriptEl ? scriptEl.textContent || "" : "",
+      props,
+      preview
+    };
+  }
+  function parseDcText(src) {
+    const openMatch = /<x-dc(?:\s[^>]*)?>/.exec(src);
+    if (!openMatch) return null;
+    const close = src.lastIndexOf("</x-dc>");
+    if (close === -1 || close < openMatch.index) return null;
+    const template = src.slice(openMatch.index + openMatch[0].length, close);
+    const doc = new DOMParser().parseFromString(src, "text/html");
+    const scriptEl = doc.querySelector("script[data-dc-script]");
+    const { props, preview } = parseDataProps(
+      scriptEl?.getAttribute("data-props") ?? null
+    );
+    return {
+      template,
+      js: scriptEl ? scriptEl.textContent || "" : "",
+      props,
+      preview
+    };
+  }
+  function parseDataProps(raw) {
+    if (!raw) return { props: null, preview: null };
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      return { props: null, preview: null };
+    }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return { props: null, preview: null };
+    }
+    const obj = parsed;
+    const preview = obj.$preview && typeof obj.$preview === "object" ? obj.$preview : null;
+    const rest = {};
+    for (const k of Object.keys(obj)) {
+      if (k[0] !== "$") rest[k] = obj[k];
+    }
+    return { props: Object.keys(rest).length ? rest : null, preview };
+  }
+  function dcNameFromPath(pathname) {
+    let p = pathname || "";
+    try {
+      p = decodeURIComponent(p);
+    } catch {
+    }
+    const base = p.split("/").pop() || "Root";
+    return base.replace(/\.dc\.html$/, "").replace(/\.html?$/, "") || "Root";
+  }
+
+  // src/boot.ts
+  var BASE_CSS = `
     .sc-placeholder{background:color-mix(in srgb,currentColor 8%,transparent);
       border:1px solid color-mix(in srgb,currentColor 50%,transparent);
       border-radius:2px;box-sizing:border-box;overflow:hidden}
@@ -44,5 +128,1784 @@
         animation-play-state: running !important; transition-duration: 0s !important;
       }
     }
-  `,Ot="html,body{height:100%;margin:0}#dc-root,#dc-root>.sc-host{height:100%}";function jt(t,n){let e=n.pathname||"";if(!/\.dc\.html?$/i.test(It(e)))try{e=new URL(t.baseURI||"/").pathname}catch{}return Pt(e)}function It(t){try{return decodeURIComponent(t)}catch{return t}}function zt(t,n=document){const e=Lt(n);if(!e)return null;const r=L(),o=jt(n,location);t.markFetched(o),t.setRootName(o),t.adoptParsed(o,e),window.__resources||fetch(location.href).then(_=>_.ok?_.text():"").then(_=>{const u=_?tt(_):null;u?.template&&t.updateHtml(o,u.template)}).catch(()=>{});const s=n.querySelector("x-dc"),i=n.createElement("div");if(i.id="dc-root",s.replaceWith(i),!e.preview){const _=n.createElement("style");_.textContent=Ot,n.head.appendChild(_)}const l=t.getDC(o),c=t.registry.get(o);function a(){const[,_]=r.useState(0);r.useEffect(()=>{const d=()=>_(g=>g+1);return c.subs.add(d),()=>{c.subs.delete(d)}},[]);const u=r.useMemo(()=>{const d={};for(const g in c.propsMeta||{}){const m=c.propsMeta?.[g]?.default;m!==void 0&&(d[g]=m)}return d},[c.propsMeta]);return A(l,{...u,...c.propOverrides||{}})}const f=Tt();return f.createRoot?f.createRoot(i).render(A(a)):f.render(A(a),i),o}var et=/^[A-Za-z_$][A-Za-z0-9_$]*/,Ut=/^-?\d+(\.\d+)?$/;function D(t,n){const e=String(n).trim();if(!e)return;if(e[0]==="("&&e[e.length-1]===")"&&Gt(e))return D(t,e.slice(1,-1));const r=Ft(e);if(r){const o=D(t,e.slice(0,r.index)),s=D(t,e.slice(r.index+r.op.length));switch(r.op){case"===":return o===s;case"!==":return o!==s;case"==":return o==s;default:return o!=s}}if(e[0]==="!")return!D(t,e.slice(1));if(e==="true")return!0;if(e==="false")return!1;if(e==="null")return null;if(e!=="undefined")return Ut.test(e)?Number(e):e.length>=2&&(e[0]==='"'||e[0]==="'")&&e[e.length-1]===e[0]?e.slice(1,-1):Bt(t,e)}function Gt(t){let n=0;for(let e=0;e<t.length-1;e++)if(t[e]==="(")n++;else if(t[e]===")"&&(n--,n===0))return!1;return!0}function Ft(t){let n=0;for(let e=0;e<t.length;e++){const r=t[e];if(r==="["||r==="(")n++;else if(r==="]"||r===")")n--;else if(n===0&&(r==="="||r==="!")&&t[e+1]==="="){if(e>0&&(t[e-1]==="="||t[e-1]==="!")||!t.slice(0,e).trim())continue;const o=t[e+2]==="="?r+"==":r+"=";return{index:e,op:o}}}return null}function Bt(t,n){const e=n.match(et);if(!e)return;let r=t?.[e[0]],o=e[0].length;for(;o<n.length;)if(n[o]==="."){const s=n.slice(o+1).match(et)||n.slice(o+1).match(/^\d+/);if(!s)return;r=r?.[s[0]],o+=1+s[0].length}else if(n[o]==="["){let s=1,i=o+1;for(;i<n.length&&s>0;){if(n[i]==="[")s++;else if(n[i]==="]"&&(s--,s===0))break;i++}if(s!==0)return;const l=D(t,n.slice(o+1,i));r=r?.[l],o=i+1}else return;return r}var W="sc-camel-",Wt=new Set("a abbr b bdi bdo br cite code del dfn em i ins kbd mark q s samp small span strike strong sub sup u var wbr".split(" ")),nt={select:"sc-raw-select",table:"sc-raw-table",tbody:"sc-raw-tbody",thead:"sc-raw-thead",tfoot:"sc-raw-tfoot",tr:"sc-raw-tr",td:"sc-raw-td",th:"sc-raw-th",caption:"sc-raw-caption"},rt=Object.fromEntries(Object.entries(nt).map(([t,n])=>[n,t])),$t=new Set("allowFullScreen async autoFocus autoPlay checked controls default defer disabled disablePictureInPicture disableRemotePlayback formNoValidate hidden itemScope loop multiple muted noModule noValidate open playsInline readOnly required reversed scoped seamless selected".split(" ")),qt={onclick:"onClick",onchange:"onChange",oninput:"onInput",onsubmit:"onSubmit",onkeydown:"onKeyDown",onkeyup:"onKeyUp",onkeypress:"onKeyPress",onmousedown:"onMouseDown",onmouseup:"onMouseUp",onmouseenter:"onMouseEnter",onmouseleave:"onMouseLeave",onfocus:"onFocus",onblur:"onBlur",ondoubleclick:"onDoubleClick",oncontextmenu:"onContextMenu",onmousemove:"onMouseMove",onmouseover:"onMouseOver",onmouseout:"onMouseOut",onpointerdown:"onPointerDown",onpointerup:"onPointerUp",onpointermove:"onPointerMove",onpointerenter:"onPointerEnter",onpointerleave:"onPointerLeave",onpointercancel:"onPointerCancel",onpointerover:"onPointerOver",onpointerout:"onPointerOut",ongotpointercapture:"onGotPointerCapture",onlostpointercapture:"onLostPointerCapture",ontouchstart:"onTouchStart",ontouchend:"onTouchEnd",ontouchmove:"onTouchMove",ontouchcancel:"onTouchCancel",ondragstart:"onDragStart",ondragend:"onDragEnd",ondragenter:"onDragEnter",ondragleave:"onDragLeave",ondragover:"onDragOver",onanimationstart:"onAnimationStart",onanimationend:"onAnimationEnd",onanimationiteration:"onAnimationIteration",ontransitionend:"onTransitionEnd"},Vt=`(?:[^>"']|"[^"]*"|'[^']*')*`,Ht=new RegExp("<(x-import|dc-import)("+Vt+")/>","gi"),ot=`(?:=\\s*"[^"]*"|=\\s*'[^']*'|=(?!\\s*["'])|[^>=])*`,Kt=new RegExp("(<!---?>|<!--[\\s\\S]*?--!?>)|(<(script|style|textarea|title)(?=[\\s/>])"+ot+">)([\\s\\S]*?<\\/\\3(?=[\\s/>])[^>]*>)|<[a-zA-Z][^\\s/>]*(?=[\\s/>])"+ot+">","gi"),Zt=/=\s*"[^"]*"|=\s*'[^']*'|(\s)([a-z]+[A-Z][A-Za-z0-9]*)(?=\s*=)/g;function Jt(t){const n=e=>e.replace(Zt,(r,o,s)=>s===void 0?r:o+W+s.replace(/[A-Z]/g,i=>"-"+i.toLowerCase()));return t.replace(Kt,(e,r,o,s,i)=>r!==void 0?e:o?n(o)+i:n(e))}function Xt(t){t=t.replace(Ht,(n,e,r)=>"<"+e+r+"></"+e+">"),t=t.replace(/<helmet(\s|>)/gi,"<sc-helmet$1"),t=t.replace(/<\/helmet\s*>/gi,"</sc-helmet>"),t=Jt(t);for(const[n,e]of Object.entries(nt))t=t.replace(new RegExp("(</?)"+n+"(?=[\\s>])","gi"),"$1"+e);return t}function U(t){return t.replace(/-([a-z])/g,(n,e)=>e.toUpperCase())}function Yt(t){if(t.startsWith("--")||!/[a-z][A-Z]/.test(t))return t;if(t==="cssFloat")return"float";const n=t.replace(/[A-Z]/g,e=>"-"+e.toLowerCase());return/^(webkit|moz|ms|o)-/.test(n)?"-"+n:n}function st(t){const n={};for(const e of t.split(";")){const r=e.indexOf(":");if(r<0)continue;const o=e.slice(0,r).trim();n[o.startsWith("--")?o:U(o)]=e.slice(r+1).trim()}return n}function P(t){const n=t.match(/^\s*\{\{([\s\S]+?)\}\}\s*$/);if(n){const e=n[1];return r=>D(r,e)}if(t.includes("{{")){const e=t.split(/\{\{([\s\S]+?)\}\}/g);return r=>e.map((o,s)=>s&1?D(r,o)??"":o).join("")}return()=>t}function Qt(t){return t==="constructor"||t==="prototype"?!1:/^(?:--[a-zA-Z0-9_-]+|[a-z][a-z0-9-]*)$/.test(t)}var te=/^data-keyframes-(css|attr)-(.+)$/;function ee(t){const n=te.exec(t);return n?{kind:n[1],prop:n[2]}:null}var ne=new Set(["script","style","link","meta","base","iframe","frame","embed","object","portal","template","head","html","body","animate","set","animatemotion","applet","frameset","noembed","xmp"]);function re(t){return!ne.has(t.toLowerCase())}function oe(t){return!(!/^[a-z][a-z0-9-]*$/.test(t)||t.startsWith("on")||t==="srcdoc"||t==="style"||t==="class"||t==="id"||t==="is"||t==="contenteditable"||t==="key"||t==="ref"||t==="children"||t==="dangerouslysetinnerhtml"||t.startsWith("data-dc-")||t.startsWith("data-om-")||t.startsWith("data-dm-")||t.startsWith("data-react-")||t.startsWith("data-keyframes-")||t.startsWith("sc-camel-"))}var se=new Set(["href","action","formaction","cite","ping","longdesc"]),ie=new Set(["src","srcset","poster","data","background"]);function ce(t,n){const e=String(n),r=se.has(t);if(!r&&!ie.has(t))return e;const o=t==="srcset"?e.split(",").map(s=>s.trim().split(/\s+/)[0]??""):t==="ping"?e.trim().split(/\s+/):[e];for(const s of o)if(!ae(s,r))return null;return e}function ae(t,n){const e=t.replace(/[\t\n\r]/g,"").trim();if(!e)return!0;try{const r=new URL(e,"https://dc-keyframes-base.invalid/").protocol;return r==="http:"||r==="https:"||n&&(r==="mailto:"||r==="tel:")?!0:!n&&r==="data:"&&/^data:image\/(?!svg)/i.test(e.replace(/\s+/g,""))}catch{return!1}}function le(t){let n=t;if(typeof n=="string"){const e=n.trim();if(!e)return null;const r=z.get(e);if(r!==void 0)return r;let o;try{o=JSON.parse(e)}catch{return z.set(e,null),null}const s=it(o);return z.size>512&&z.clear(),z.set(e,s),s}return it(n)}var z=new Map;function it(t){if(!Array.isArray(t))return null;const n=[];for(const e of t){if(!e||typeof e!="object"||Array.isArray(e))continue;const{t:r,v:o}=e;typeof r!="number"||!Number.isFinite(r)||(typeof o=="number"?!Number.isFinite(o):typeof o!="string")||n.push(e)}return n.length?n.sort((e,r)=>e.t-r.t):null}function ue(t,n){const e=t[0];if(n<=e.t)return e.v;const r=t[t.length-1];if(n>=r.t)return r.v;let o=0;for(;o<t.length-1&&t[o+1].t<=n;)o++;const s=t[o],i=t[o+1];if(i.t===s.t)return i.v;const l=(n-s.t)/(i.t-s.t);return pe(s.v,i.v,de(s.ease,l),l)}var ct={in:[.42,0,1,1],out:[0,0,.58,1],inOut:[.42,0,.58,1],ease:[.25,.1,.25,1],"ease-in":[.42,0,1,1],"ease-out":[0,0,.58,1],"ease-in-out":[.42,0,.58,1]},fe=/^cubic-bezier\(\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*\)$/i;function de(t,n){if(n<=0)return 0;if(n>=1)return 1;if(typeof t!="string"||!t||t==="linear")return n;const e=Object.hasOwn(ct,t)?ct[t]:void 0;if(e)return at(e,n);const r=fe.exec(t.trim());if(r){const o=$(Number(r[1])),s=Number(r[2]),i=$(Number(r[3])),l=Number(r[4]);if([o,s,i,l].every(Number.isFinite))return at([o,s,i,l],n)}return n}function $(t){return t<0?0:t>1?1:t}function at([t,n,e,r],o){const s=3*t,i=3*(e-t)-s,l=1-s-i,c=3*n,a=3*(r-n)-c,f=1-c-a,_=v=>((l*v+i)*v+s)*v,u=v=>((f*v+a)*v+c)*v,d=v=>(3*l*v+2*i)*v+s;let g=o;for(let v=0;v<8;v++){const b=_(g)-o;if(Math.abs(b)<1e-6)return u(g);const k=d(g);if(Math.abs(k)<1e-6)break;g-=b/k}let m=0,S=1;for(g=o;S-m>1e-6;)_(g)<o?m=g:S=g,g=(m+S)/2;return u(g)}var lt=/^(-?\d*\.?\d+(?:e[-+]?\d+)?)([a-z%]*)$/i,ut=/^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i,G=/-?\d*\.?\d+(?:e[-+]?\d+)?/g;function pe(t,n,e,r=e){if(typeof t=="number"&&typeof n=="number")return t+(n-t)*e;const o=String(t),s=String(n),i=lt.exec(o),l=lt.exec(s);if(i&&l){const u=i[2].toLowerCase(),d=l[2].toLowerCase();if(u===d||!u||!d){const g=q(Number(i[1]),Number(l[1]),e);return ft(g)+(u||d)}return r<1?t:n}const c=ut.exec(o),a=ut.exec(s);if(c&&a)return me(c[1],a[1],e);const f=o.match(G),_=s.match(G);if(f&&_&&f.length===_.length){const u=o.split(G),d=s.split(G);if(u.length===d.length&&u.every((g,m)=>g===d[m])){let g="";for(let m=0;m<u.length;m++)if(g+=u[m],m<f.length){const S=f[m],v=_[m],b=/^-?0\d/.test(S)||/^-?0\d/.test(v);g+=b?r<1?S:v:ft(q(Number(S),Number(v),e))}return g}}return r<1?t:n}function q(t,n,e){return t+(n-t)*e}function ft(t){return String(Math.round(t*1e4)/1e4)}function me(t,n,e){const r=dt(t),o=dt(n),s=c=>Math.round($(c/255)*255).toString(16).padStart(2,"0"),i=r.length===4||o.length===4?4:3;let l="#";for(let c=0;c<i;c++)l+=s(q(r[c]??255,o[c]??255,e));return l}function dt(t){return(t.length<=4?t.split("").map(e=>e+e):t.match(/../g)??[]).map(e=>parseInt(e,16))}function V(t,n,e){const r=[],o=[];let s=!1;const i=[];let l=null;for(const{name:c,value:a}of[...t.attributes]){if(c==="sc-name"||c==="data-dc-tpl")continue;if(n==="dom"){const _=ee(c),u=!_||_.kind==="css"||re(rt[t.localName]||t.localName);_&&u&&(_.kind==="css"?Qt(_.prop):oe(_.prop))&&i.push({kind:_.kind,prop:_.prop,getter:P(a)})}let f=c;if(f.startsWith(W)&&(f=U(f.slice(W.length))),f==="hint-size"){l=a;continue}if(f.startsWith("style-")){o.push(e.pseudoClass(f.slice(6),a));continue}if(n!=="dom")f.includes("-")&&!(n==="x-import"&&(f.startsWith("aria-")||f.startsWith("data-")))&&(f=U(f));else if(f==="class")f="className";else if(f==="for")f="htmlFor";else if(f.startsWith("on"))f=qt[f]||"on"+f[2].toUpperCase()+f.slice(3);else if(f==="checked"&&t.localName==="input"&&!a.includes("{{")&&!e.omelette){r.push(["defaultChecked",()=>!0]),s=!0;continue}else if(a===""&&$t.has(f)&&!e.omelette){r.push([f,()=>!0]);continue}r.push([f,P(a)])}return{propGetters:r,pseudoClasses:o,hintSize:l,kfTracks:i,initialChecked:s}}var he=new Set(["position","left","right","top","bottom","inset","width","height","z-index","transform"]),pt=t=>t.startsWith("--")?t:t.replace(/[A-Z]/g,n=>"-"+n.toLowerCase());function mt(t){const n=typeof t=="string"?st(t):t!=null&&typeof t=="object"?t:null;if(!n)return;const e={};for(const[r,o]of Object.entries(n))he.has(pt(r))&&(e[r]=o);return Object.keys(e).length?e:void 0}function ge(t,n){const e=document.createElement("template");e.innerHTML=Xt(t);let r=0;(function i(l){l.nodeType===Node.ELEMENT_NODE&&l.setAttribute("data-dc-tpl",String(r++));for(const c of l.childNodes)i(c)})(e.content);const o=j(e.content,n),s=((i,l)=>o.map((c,a)=>c(i||{},l,a)));return s.__annotated=e.innerHTML,s}function j(t,n){return[...t.childNodes].map(e=>_e(e,n)).filter(e=>e!=null)}function _e(t,n){if(t.nodeType===Node.TEXT_NODE)return be(t);if(t.nodeType!==Node.ELEMENT_NODE)return null;const e=t,r=e.tagName.toLowerCase();return r==="sc-for"?ye(e,n):r==="sc-if"?we(e,n):r==="x-import"?Ee(e,n):r==="sc-helmet"?n.helmet(e):r==="dc-import"?ve(e,n):Le(e,n)}var ht=new Set;function gt(t,n){const e=(t?.__name||"?")+"\0"+n;ht.has(e)||(ht.add(e),console.warn("[dc-runtime] "+(t?.__name||"template")+": "+n))}function be(t){const n=t.nodeValue??"";if(!n.includes("{{"))return!n.trim()&&!n.includes(" ")?null:()=>n;const e=n.split(/\{\{([\s\S]+?)\}\}/g);return(r,o,s)=>A(L().Fragment,{key:s},...e.map((i,l)=>{if(!(l&1))return i;const c=D(r,i);return c===void 0?o?.__streamingNow?A("span",{key:l,className:"sc-interp sc-missing"},i.trim()):document.body?.hasAttribute("data-dc-editor-on")?A("span",{key:l,className:"sc-interp sc-unresolved"},"{{ "+i.trim()+" }}"):(gt(o,"{{ "+i.trim()+" }} never resolved \u2014 rendered as empty"),null):L().isValidElement(c)||Array.isArray(c)?A(L().Fragment,{key:l},c):c===null||typeof c=="boolean"?null:A("span",{key:l,className:"sc-interp"},String(c))}))}function ye(t,n){const e=P(t.getAttribute("list")||""),r=t.getAttribute("as")||"item",o=parseInt(t.getAttribute("hint-placeholder-count")||"0",10),s=j(t,n),i=t.getAttribute("list")||"";return(l,c,a)=>{let f=e(l);return Array.isArray(f)||(c?.__streamingNow?f=o>0?Array(o).fill(void 0):[]:(f!=null&&gt(c,'sc-for list="'+i+'" is not an array ('+typeof f+")"),f=[])),A(L().Fragment,{key:a},f.map((_,u)=>{const d={...l,[r]:_,$index:u};return A(L().Fragment,{key:u},s.map((g,m)=>g(d,c,m)))}))}}function we(t,n){const e=P(t.getAttribute("value")||""),r=t.getAttribute("hint-placeholder-val"),o=r!=null?P(r):null,s=j(t,n);return(i,l,c)=>{let a=e(i);return a===void 0&&o&&l?.__streamingNow&&(a=o(i)),a?A(L().Fragment,{key:c},s.map((f,_)=>f(i,l,_))):null}}function ve(t,n){const e=t.getAttribute("name")||t.getAttribute("component")||"";t.removeAttribute("name"),t.removeAttribute("component");const r=t.getAttribute("data-dc-tpl"),o=t.getAttribute("style");t.removeAttribute("style");const s=o!=null?P(o):null,{propGetters:i,hintSize:l}=V(t,"dc-import",n),c=j(t,n);return(a,f,_)=>{const u={key:_,__hintSize:l,__tplId:r,__hostStyle:s?mt(s(a)):void 0};for(const[d,g]of i){const m=g(a);if(d==="dcProps"){m&&typeof m=="object"&&Object.assign(u,m);continue}u[d]=m}return c.length&&(u.children=c.map((d,g)=>d(a,f,g))),A(n.component(e),u)}}function Ee(t,n){const e=P(t.getAttribute("component-from-global-scope")||""),r=P(t.getAttribute("component")||t.getAttribute("name")||""),o=t.getAttribute("from")||(t.getAttribute("component-from-global-scope")?"":t.getAttribute("src")||t.getAttribute("import")||""),s=o.trim()?o.trim().split(/\s+/):[],i=s.length?s[s.length-1]:"",l=b=>/\.(jsx|tsx)(\?|#|$)/i.test(b)?"jsx":"js",c=t.getAttribute("data-dc-tpl"),a=t.getAttribute("style");t.removeAttribute("style");const f=a!=null?P(a):null,_=c!=null||f!=null,{propGetters:u,hintSize:d}=V(t,"x-import",n),m=t.children.length>0||!!(t.textContent||"").trim()?j(t,n):[],S=o.includes("{{");if(s.length&&!S){let b;for(const k of s)b=n.loadExternal(l(k),k,b)}const v=(b,k)=>{const w=b(k),p=w==null?"":String(w);return p.includes("{{")?"":p};return(b,k,w)=>{const p=v(e,b),h=p||v(r,b),y=!h||S?null:p?n.resolveExternalGlobal(i,p):n.resolveExternal(i,h),E=f?mt(f(b)):void 0,x=_?{key:w,className:"sc-host-x","data-dc-tpl":c,style:E||{display:"contents"}}:null;if(!y){const C=S?"x-import `from` cannot contain {{ \u2026 }} \u2014 module URLs are resolved at parse time; use a literal URL":n.resolveExternalError(i,h),N=n.placeholder({key:x?void 0:w,name:h,hintSize:d,error:C});return x?A("div",x,N):N}const R=x?{}:{key:w};let M=!1;for(const[C,N]of u){if(C==="component"||C==="componentFromGlobalScope"||C==="from")continue;const O=N(b);if(O===void 0&&(M=!0),C==="dcProps"){O&&typeof O=="object"&&Object.assign(R,O);continue}R[C]=O}if(M&&k?.__htmlStreamingNow){const C=n.placeholder({key:x?void 0:w,name:h,hintSize:d,error:null});return x?A("div",x,C):C}return m.length&&(R.children=m.map((C,N)=>C(b,k,N))),x?A("div",x,A(y,R)):A(y,R)}}function Se(t){const n=t.cloneNode(!0);for(const o of n.querySelectorAll("*"))for(;o.attributes.length;)o.removeAttribute(o.attributes[0].name);const e=n.innerHTML;let r=5381;for(let o=0;o<e.length;o++)r=(r<<5)+r+e.charCodeAt(o)|0;return e.length+"."+(r>>>0).toString(36)}var xe=new Set("script style textarea option title select canvas iframe video audio".split(" ")),ke=":not("+[...Wt].join(",")+")",_t=/-{0,2}[A-Za-z_][A-Za-z0-9_-]*/y,Ae=/^(?:behavior|-moz-binding)$/i,bt=/[ \t\n\r\f]/;function Ce(t){let n="",e=0,r=0,o=!0;const s=t.length;for(;e<s;){if(o){let l=e;for(;l<s&&bt.test(t[l]);)l++;if(t[l]==="/"&&t[l+1]==="*"){const a=t.indexOf("*/",l+2),f=a<0?s:a+2;n+=t.slice(e,f),e=f;continue}o=!1,_t.lastIndex=l;const c=_t.exec(t);if(c){let a=l+c[0].length;for(;;){for(;a<s&&bt.test(t[a]);)a++;if(t[a]!=="/"||t[a+1]!=="*")break;const f=t.indexOf("*/",a+2);a=f<0?s:f+2}if(t[a]===":"){const f=Yt(c[0]);n+=t.slice(e,l)+(Ae.test(f)?c[0]:f),e=l+c[0].length;continue}}}const i=t[e];if(i==='"'||i==="'"){let l=e+1;for(;l<s&&t[l]!==i;)l+=t[l]==="\\"?2:1;n+=t.slice(e,l+1),e=l+1;continue}if(i==="/"&&t[e+1]==="*"){const l=t.indexOf("*/",e+2),c=l<0?s:l+2;n+=t.slice(e,c),e=c;continue}if(i==="\\"){n+=t.slice(e,e+2),e+=2;continue}i==="("||i==="{"||i==="["?r++:i===")"||i==="}"||i==="]"?r=Math.max(0,r-1):i===";"&&r===0&&(o=!0),n+=i,e++}return n}function Ne(t,n){return t==null?void 0:t+"\0"+n.join(";")}function Re(t,n){const e=Ne(t,n);return r=>{if(!r||r.__dcCss===e)return;r.__dcCss=e;const o=r.style,s=n.map(i=>[i,o.getPropertyValue(i)]);o.cssText=t?Ce(t):"";for(let i=o.length;i-- >0;){const l=o[i];if(!o.getPropertyPriority(l))continue;const c=o.getPropertyValue(l);c&&o.setProperty(l,c),o.getPropertyPriority(l)&&o.removeProperty(l)}for(const[i,l]of s)l&&o.setProperty(i,l)}}function Me(t,n){typeof t=="function"?t(n):t.current=n}function yt(t,n,e,r){let o=t.get(e);return o||(t.size>=n&&t.delete(t.keys().next().value),t.set(e,o=r())),o}var wt=new WeakMap;function Te(){const t=new Map;return(n,e,r)=>{const o=(n==null?"none":"css:"+n)+"\0"+e.join(";"),s=()=>Re(n,e);if(r==null||typeof r!="function"&&typeof r!="object")return yt(t,64,o,s);let i=wt.get(r);return i||wt.set(r,i=new Map),yt(i,1024,o,()=>{const l=s();return c=>{l(c),Me(r,c)}})}}function Le(t,n){const e=rt[t.localName]||t.localName,r=t.getAttribute("data-dc-tpl"),o=t.childNodes.length>0&&!xe.has(e)&&t.querySelector(ke)===null,{propGetters:s,pseudoClasses:i,kfTracks:l,initialChecked:c}=V(t,"dom",n),a=(o?"|"+Se(t):"")+(c?"|checked":""),f=j(t,n),_=n.omelette?null:Te();return(u,d,g)=>{const m={key:g+a,"data-dc-tpl":r};let S=null;for(const[b,k]of s){let w=k(u);b==="style"&&typeof w=="string"&&(S=w,w=st(w)),(b==="value"||b==="checked")&&w===void 0&&(w=b==="checked"?!1:""),m[b]=w}i.length&&(m.className=[m.className,...i].filter(Boolean).join(" "));const v=[];if(l.length){const b=n.keyframesPlayhead?n.keyframesPlayhead():0;let k=null;for(const w of l){const p=le(w.getter(u));if(!p)continue;const h=ue(p,b);if(w.kind==="css")v.push(w.prop),k||(k=m.style&&typeof m.style=="object"?{...m.style}:{},m.style=k),k[w.prop.startsWith("--")?w.prop:U(w.prop)]=h;else{const y=ce(w.prop,h);y!=null&&(m[w.prop]=y)}}}if(_){const b=S==null&&m.style&&typeof m.style=="object"?Object.keys(m.style).map(pt):v;m.ref=_(S,b.sort(),m.ref)}return A(e,m,...f.map((b,k)=>b(u,d,k)))}}var Pe=10,vt=300,De=t=>t.length>vt?t.slice(0,vt-1)+"\u2026":t;function Oe(t,n,e){const r=new Map;let o=null,s=!1;const i=()=>{if(e()){n(i);return}s=!1;const c=[...new Set(r.values())].slice(0,Pe).map(f=>({message:De(f)})),a=JSON.stringify(c);a!==o&&(o=a,t(c))},l=()=>{s||(s=!0,n(i))};return{show(c){const a={};return r.set(a,c),l(),()=>{r.delete(a),l()}},begin:l}}var H=null;function je(t){H=t}function Et(t){return H?.show(t)}function Ie(){H?.begin()}var I=class{constructor(t){T(this,"props"),T(this,"state",{}),T(this,"__host"),this.props=t||{}}setState(t,n){this.__host&&this.__host.__setLogicState(t,n)}forceUpdate(){this.__host&&this.__host.forceUpdate()}componentDidMount(){}componentDidUpdate(t){}componentWillUnmount(){}renderVals(){return{}}};function ze(t){return new Function("DCLogic","StreamableLogic","React",t+`
-;return (typeof Component!=="undefined"&&Component)||undefined;`)(I,I,L())}function Ue(t,n){if(!n)return!1;const e=Object.keys(t).filter(o=>o!=="children"),r=Object.keys(n).filter(o=>o!=="children");if(e.length!==r.length)return!1;for(const o of e)if(t[o]!==n[o])return!1;return!0}var K,St=t=>t.chrome?{className:t.className,"data-omelette-chrome":""}:{className:t.className};function Z(t){return K?A(K,t):A("div",St(t),t.message)}function F({name:t,hintSize:n,streaming:e,error:r}){const[o,s]=(n||"100%,60px").split(","),i=r?(t?t+": ":"")+r:null;return A("div",{className:"sc-placeholder"+(e?" sc-streaming":""),style:{width:o.trim(),height:s&&s.trim()},title:t},i?Z({className:"sc-placeholder-error",message:i}):null)}function Ge(t){if(!t)return;const[n,e]=t.split(",");return{minWidth:n.trim(),minHeight:e&&e.trim()}}function Fe(t,n,e=()=>{}){const r=L();K=class extends r.Component{constructor(){super(...arguments),T(this,"off")}componentDidMount(){this.off=Et(this.props.message)}componentDidUpdate(c){c.message!==this.props.message&&(this.off?.(),this.off=Et(this.props.message))}componentWillUnmount(){this.off?.()}render(){return A("div",St(this.props),this.props.message)}};const o=r.createContext([]);class s extends r.Component{constructor(a){super(a),T(this,"__name"),T(this,"__sub"),T(this,"__needsDidMount",!1),T(this,"__streamingNow",!1),T(this,"__htmlStreamingNow",!1),T(this,"__failedLogic",null),T(this,"__failedUserProps",null),T(this,"__failedVer",-1),T(this,"__ctorError",null),T(this,"logic"),this.__name=a.__name,this.state={__v:0,__err:null},this.__sub=()=>{this.state.__err&&this.setState({__err:null}),this.forceUpdate()},this.__makeLogic(t.get(this.__name).Logic,null),n(this.__name)}static getDerivedStateFromError(a){return{__err:a instanceof Error&&a.message?a.message:String(a)}}componentDidCatch(a,f){console.error("[dc-runtime] render error in <"+this.__name+">:",a,f?.componentStack||"")}__makeLogic(a,f){const _=a||I;try{this.logic=new _(this.__userProps()),this.__failedLogic=null,this.__failedUserProps=null,this.__ctorError=null}catch(u){console.error(u),this.__failedLogic=a,this.__failedUserProps=this.__userProps(),this.__failedVer=t.get(this.__name).ver,this.__ctorError=this.__name+": "+(u instanceof Error&&u.message?u.message:String(u)),this.logic=new I(this.__userProps())}this.logic.__host=this,f&&(this.logic.state={...this.logic.state||{},...f})}__userProps(){const{__name:a,__hintSize:f,__tplId:_,__hostStyle:u,...d}=this.props;return d}__setLogicState(a,f){const _=this.logic.state,u=typeof a=="function"?a(_):a;this.logic.state={..._,...u},this.setState(d=>({__v:d.__v+1}),f)}__reconcileLogic(){const a=t.get(this.__name),f=a.Logic,_=this.logic.constructor;if(!(f===_||!f&&_===I||f===this.__failedLogic&&a.ver===this.__failedVer&&Ue(this.__userProps(),this.__failedUserProps))){if(!this.__needsDidMount)try{this.logic.componentWillUnmount()}catch(u){console.error(u)}this.__makeLogic(f,this.logic.state),this.__needsDidMount=!0}}componentDidMount(){t.get(this.__name).subs.add(this.__sub);try{this.logic.componentDidMount()}catch(a){console.error(a)}}componentDidUpdate(a){if(this.logic.props=this.__userProps(),this.__needsDidMount){if(this.state.__err||!t.get(this.__name).tpl)return;this.__needsDidMount=!1;try{this.logic.componentDidMount()}catch(f){console.error(f)}}else try{this.logic.componentDidUpdate(a)}catch(f){console.error(f)}}componentWillUnmount(){if(t.get(this.__name).subs.delete(this.__sub),!this.__needsDidMount)try{this.logic.componentWillUnmount()}catch(a){console.error(a)}}render(){e(this.__name);const a=t.get(this.__name),f="sc-host"+(a.htmlStreaming?" sc-streaming-html":"")+(a.jsStreaming?" sc-streaming-js":""),_=a.htmlStreaming?Ge(this.props.__hintSize):void 0,u=this.props.__hostStyle||_?{..._||{},...this.props.__hostStyle||{}}:void 0,d={className:f,style:u,"data-sc-name":this.__name,"data-dc-tpl":this.props.__tplId},g=Array.isArray(this.context)?this.context:[];if(g.includes(this.__name)){const b=[...g.slice(g.indexOf(this.__name)),this.__name].join(" \u2192 ");return A("div",{...d,className:f+" sc-has-error"},A(F,{name:this.__name,hintSize:this.props.__hintSize,error:"circular import: "+b}))}if(this.state.__err)return A("div",{...d,className:f+" sc-has-error"},Z({className:"sc-logic-error",message:this.__name+": "+this.state.__err,chrome:!0}),A(F,{name:this.__name,hintSize:this.props.__hintSize,error:this.state.__err}));if(this.__reconcileLogic(),!a.tpl)return A("div",d,A(F,{name:this.__name,hintSize:this.props.__hintSize}));const m=this.__userProps();this.logic.props=m;let S=m,v=a.logicError||this.__ctorError;try{S={...m,...this.logic.renderVals()||{}}}catch(b){console.error(b),v=this.__name+".renderVals(): "+(b instanceof Error&&b.message?b.message:String(b))}return this.__streamingNow=!!(a.htmlStreaming||a.jsStreaming),this.__htmlStreamingNow=!!a.htmlStreaming,A("div",{...d,className:f+(v?" sc-has-error":"")},v&&Z({className:"sc-logic-error",message:v,chrome:!0}),A(o.Provider,{value:[...g,this.__name]},a.tpl(S,this)))}}T(s,"contextType",o);const i=new Map;function l(c){const a=i.get(c);if(a)return a;function f(_){const[,u]=r.useState(0);return r.useEffect(()=>{const d=()=>u(g=>g+1);return t.get(c).subs.add(d),()=>{t.get(c).subs.delete(d)}},[]),n(c),A(s,{..._,__name:c})}return f.displayName=c,i.set(c,f),f}return{getDC:l,StreamableComponent:s}}function J(t){const n=window.__resourceBlobs,e=n?n[t.split("#")[0]]:void 0;return e instanceof Blob?e:null}var Be="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js",We="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z",$e="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js",qe="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1",Ve="https://cdn.jsdelivr.net/npm/@babel/standalone@7.29.0/babel.min.js",He="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y";function X(t,n){const e=window.__resources,r=e?e[t]:void 0;return typeof r=="string"&&r?{src:r}:{src:t,integrity:n}}var xt=t=>!t.includes(".")&&t.includes("-");function Y(t){return typeof t=="function"?!Ze(t):typeof t=="object"&&t!==null&&typeof t.$$typeof=="symbol"}function Q(t,n){let e=t;for(const r of n.split(".")){if(e==null)return;e=e[r]}return e}var kt=50,At=3e4;function Ke(t){const n=new Map;let e=null;const r=new Map,o=new Set;function s(){if(window.Babel)return Promise.resolve();if(e)return e;const u=X(Ve,He);return e=new Promise((d,g)=>{const m=document.createElement("script");m.src=u.src,u.integrity&&(m.integrity=u.integrity,m.crossOrigin="anonymous"),m.onload=()=>d(),m.onerror=g,document.head.appendChild(m)}),e}const i=new Map;function l(u,d,g){const m=i.get(d);if(m)return m;n.set(d,null),console.info("[dc-runtime] x-import: loading",d,"("+u+")");const v=Promise.all([u==="jsx"?s():Promise.resolve(),g??Promise.resolve()]).then(()=>{const b=J(d);return b?b.text():fetch(d).then(k=>{if(!k.ok)throw new Error("HTTP "+k.status);return k.text()})}).then(b=>{const k=u==="jsx"?window.Babel.transform(b,{filename:d,presets:["react","typescript"]}).code:b,w={exports:{}},p=new Set(Object.keys(window));new Function("React","module","exports","require",k)(L(),w,w.exports,()=>({}));const h={};for(const y of Object.keys(window))!p.has(y)&&typeof window[y]=="function"&&(h[y]=window[y]);n.set(d,{mod:w.exports,globals:h}),console.info("[dc-runtime] x-import: loaded",d,"\u2014 exports:",Object.keys(w.exports),"window globals:",Object.keys(h)),t()}).catch(b=>{n.set(d,{mod:{},globals:{},error:"failed to load: "+(b instanceof Error&&b.message?b.message:String(b))}),console.error("[dc-runtime] x-import: FAILED to load",d,"("+u+")",b),t()});return i.set(d,v),v}function c(u,d){const g=n.get(u);if(!g)return null;const{mod:m,globals:S}=g,v=m&&m[d]||S&&S[d]||typeof window<"u"&&window[d]||m&&m.default;if(typeof v=="function")return v;const b=u+"\0"+d;return r.has(b)||(r.set(b,g.error||'no export named "'+d+'" (has: '+Object.keys(m).join(", ")+")"),console.error("[dc-runtime] x-import: module",u,"loaded but has no component named",JSON.stringify(d),"\u2014 available exports:",Object.keys(m),"window globals:",Object.keys(S),". The module must `module.exports = {"+d+"}` or set `window."+d+"`.")),null}function a(u){if(o.has(u))return;o.add(u);const d=Date.now(),g=xt(u),m=()=>{if(g?customElements.get(u):Y(Q(window,u))){o.delete(u),t();return}if(Date.now()-d>=At){console.warn("[dc-runtime] x-import: global",JSON.stringify(u),"never appeared on window after "+At+"ms");return}setTimeout(m,kt)};setTimeout(m,kt)}function f(u,d){const g=xt(d);if(!u){if(g)return customElements.get(d)?d:(a(d),null);const b=Q(window,d);return Y(b)?b:(a(d),null)}const m=n.get(u);if(!m)return null;if(g&&customElements.get(d))return d;const S=m.globals[d]??Q(window,d);if(Y(S))return S;if(d.includes("."))return null;const v=u+"\0global\0"+d;return r.has(v)||(r.set(v,null),g&&!customElements.get(d)&&console.warn("[dc-runtime] x-import:",u,"loaded but no custom element",JSON.stringify(d),"is registered and window."+d+" is not a function \u2014 rendering <"+d+"> as an unknown element.")),d}function _(u,d){const g=n.get(u);return g?.error?g.error:r.get(u+"\0"+d)||null}return{load:l,resolve:c,resolveGlobal:f,getError:_}}function Ze(t){try{return typeof t=="function"&&typeof HTMLElement<"u"&&t.prototype instanceof HTMLElement}catch{return!1}}var Je=".fx{display:flex}.col{display:flex;flex-direction:column}.grid{display:grid}.ac{align-items:center}.jc{justify-content:center}.jb{justify-content:space-between}.f1{flex:1}.noshrink{flex-shrink:0}.wrap{flex-wrap:wrap}.fw5{font-weight:500}.fw6{font-weight:600}.fw7{font-weight:700}.fw8{font-weight:800}.fs11{font-size:11px}.fs12{font-size:12px}.fs13{font-size:13px}.fs14{font-size:14px}.fs15{font-size:15px}.fs16{font-size:16px}.fs20{font-size:20px}.fs22{font-size:22px}.upper{text-transform:uppercase}.tc{text-align:center}.nowrap{white-space:nowrap}.gap8{gap:8px}.gap10{gap:10px}.gap12{gap:12px}.gap16{gap:16px}.gap24{gap:24px}.m0{margin:0}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.posrel{position:relative}.posabs{position:absolute}.round{border-radius:50%}.ohide{overflow:hidden}.bbox{box-sizing:border-box}.pointer{cursor:pointer}.w100{width:100%}.b0{border:none}",Xe=/<meta\b[^>]*\bname\s*=\s*["']design_doc_mode["'][^>]*\b(?:content|value)\s*=\s*["'](\w+)["']/i,Ye="#ededeb",Qe="#171717",tn="#f0eee6",en="#2e2c26";function nn(t,n,e={}){const r=new Set,o=new Map;let s=null,i=null,l="light";try{const u=t.documentElement.dataset.theme;l=u==="dark"||u==="light"?u:new URLSearchParams(t.defaultView?.location.search??"").get("theme")==="dark"?"dark":"light"}catch{}function c(){if(!i)return;const u=e.omelette?l==="dark"?en:tn:l==="dark"?Qe:Ye;i.textContent=`html,body{background:${u}}#dc-root>.sc-host{position:relative}`}function a(u){if(window.parent!==window)try{window.parent.postMessage({type:"__dc_design_mode",mode:u},"*")}catch{}}function f(u){u!==s&&(s=u,a(u),u==="canvas"?(t.documentElement.setAttribute("data-dc-canvas",""),i=t.createElement("style"),i.setAttribute("data-dc-canvas",""),c(),t.head.appendChild(i)):(t.documentElement.removeAttribute("data-dc-canvas"),i?.remove(),i=null))}window.addEventListener("message",u=>{const d=u.data&&u.data.type;if(d==="__dc_theme"){const g=u.data.theme;(g==="light"||g==="dark")&&(l=g,c());return}!s||d!=="__dc_probe"||a(s)});function _(u){const d=[...u.children],g=u.nextSibling!=null||u.parentNode?.nextSibling!=null;if(u.hasAttribute("data-dc-atomics")&&!r.has("__dc-atomics")){r.add("__dc-atomics");const m=t.createElement("style");m.id="__dc-atomics",m.textContent=Je,t.head.appendChild(m)}return(m,S)=>{const v=S&&S.__name||"",b=!!(v&&n(v));for(let k=0;k<d.length;k++){const w=d[k],p=w.tagName,h=b&&!g&&k===d.length-1;if(p==="SCRIPT"){if(h)continue;const y="SCRIPT|"+(w.getAttribute("src")||w.textContent||"");if(r.has(y))continue;r.add(y);const E=t.createElement("script");for(const{name:x,value:R}of[...w.attributes])E.setAttribute(x,R);w.textContent&&(E.textContent=w.textContent),t.head.appendChild(E)}else if(p==="LINK"||p==="META"){if(h)continue;const y=p+"|"+(w.getAttribute("href")||w.getAttribute("src")||w.outerHTML);if(r.has(y))continue;if(r.add(y),p==="LINK"){const E=(w.getAttribute("rel")||"").toLowerCase().split(/\s+/),x=(w.getAttribute("href")||"").trim(),R=window.__resources,M=R&&E.includes("stylesheet")&&!E.includes("alternate")?R[x]:void 0,C=typeof M=="string"&&M?J(M):null;if(C){const N=t.createElement("style");w.hasAttribute("disabled")?N.setAttribute("media","not all"):w.getAttribute("media")&&N.setAttribute("media",w.getAttribute("media")),w.getAttribute("title")&&N.setAttribute("title",w.getAttribute("title")),C.text().then(O=>{N.textContent=O}),t.head.appendChild(N);continue}}t.head.appendChild(w.cloneNode(!0))}else{const y=v+"|"+k;let E=o.get(y);(!E||E.tagName!==p)&&(E&&E.remove(),E=t.createElement(p.toLowerCase()),o.set(y,E),t.head.appendChild(E));for(const{name:x,value:R}of[...w.attributes])E.getAttribute(x)!==R&&E.setAttribute(x,R);E.textContent!==w.textContent&&(E.textContent=w.textContent)}}return null}}return{compile:_,setDesignDocMode:f}}function Ct(t,n){if(t[n]!=="u"&&t[n]!=="U"||t.slice(n,n+4).toLowerCase()!=="url("||/[a-z0-9_-]/i.test(t[n-1]??""))return-1;let e=n+4;for(;e<t.length&&/\s/.test(t[e]);)e++;if(t[e]==='"'||t[e]==="'")return-1;for(;e<t.length&&t[e]!==")";)t[e]==="\\"&&e++,e++;return e<t.length?e+1:t.length}function rn(t){let n="",e="";for(let r=0;r<t.length;r++){const o=t[r];if(e){if(o==="\\"){n+=o+(t[r+1]??""),r++;continue}o===e&&(e=""),n+=o}else if(o==="'"||o==='"')e=o,n+=o;else if(o==="/"&&t[r+1]==="*"){const s=t.indexOf("*/",r+2);r=s===-1?t.length:s+1,n+=" "}else{const s=Ct(t,r);s===-1?n+=o:(n+=t.slice(r,s),r=s-1)}}return n}function on(t){t=rn(t);const n=[];let e=0,r=0,o="";for(let s=0;s<t.length;s++){const i=t[s];if(o)i==="\\"?s++:i===o&&(o="");else if(i==="'"||i==='"')o=i;else if(i==="(")r++;else if(i===")")r=Math.max(0,r-1);else if(i===";"&&r===0)n.push(t.slice(e,s)),e=s+1;else{const l=Ct(t,s);l!==-1&&(s=l-1)}}return n.push(t.slice(e)),n.map(s=>s.trim()).filter(Boolean).map(s=>/!\s*important$/i.test(s)?s:s+" !important").join(";")}function sn(t){let n=null;const e=new Map;let r=0;return(o,s)=>{const i=o+"|"+s,l=e.get(i);if(l)return l;n||(n=t.createElement("style"),t.head.appendChild(n));const c="scp"+(r++).toString(36),a=o==="before"||o==="after",f=a?"."+c+"::"+o:"."+c+":"+o;return n.sheet.insertRule(f+"{"+(a?s:on(s))+"}",n.sheet.cssRules.length),e.set(i,c),c}}function cn(){const t=Object.create(null);function n(r){return t[r]||(t[r]={html:"",tpl:null,Logic:null,jsStreaming:!1,htmlStreaming:!1,ver:0,subs:new Set,fetched:!1})}function e(r){const o=n(r);o.ver++;for(const s of o.subs)s()}return{entries:t,get:n,bump:e,bumpAll(){for(const r in t)e(r)}}}var an=".";function ln(t=document,n={}){const e=n.omelette===!0,r=cn(),o=sn(t),s=nn(t,p=>r.get(p).htmlStreaming,{omelette:e}),i=Ke(()=>r.bumpAll()),l=Fe(r,_,g),c={component:p=>l.getDC(p),placeholder:p=>A(F,p),helmet:p=>s.compile(p),loadExternal:(p,h,y)=>i.load(p,h,y),resolveExternal:(p,h)=>i.resolve(p,h),resolveExternalGlobal:(p,h)=>i.resolveGlobal(p,h),resolveExternalError:(p,h)=>i.getError(p,h),pseudoClass:o,keyframesPlayhead:()=>a,omelette:e};let a=0;function f(p){const h=typeof p=="number"&&Number.isFinite(p)?Math.max(0,p):0;h!==a&&(a=h,r.bumpAll())}function _(p){const h=r.get(p);if(h.fetched)return;h.fetched=!0;const y=an+"/"+encodeURIComponent(p)+".dc.html",E=window.__resources,x=E?E[y]:void 0,R=typeof x=="string"&&x?x:y,M=J(R);(M?M.text():fetch(R).then(C=>C.ok?C.text():(console.error('[dc-runtime] sibling fetch for "'+p+'" failed:',y,"returned",C.status,"\u2014 the reference renders as an empty placeholder."),""))).then(C=>{if(!C)return;const N=tt(C);if(!N){console.error('[dc-runtime] sibling fetch for "'+p+'":',y,"has no <x-dc> block \u2014 not a Design Component.");return}N.props&&(h.propsMeta=N.props),N.preview&&(h.preview=N.preview),N.template&&!h.html&&m(p,N.template),N.js&&!h.Logic&&S(p,N.js)}).catch(C=>console.error('[dc-runtime] sibling fetch for "'+p+'" threw:',y,C))}let u=null;function d(p,h){h.tplStale=!1;try{h.tpl=ge(h.html,c)}catch(y){console.error("[dc-runtime] template compile FAILED for",p,y)}}function g(p){const h=r.get(p);h.tplStale&&d(p,h)}function m(p,h){const y=r.get(p);if(y.html=h,p===u){const E=Xe.exec(h)?.[1]??null;(E||!y.htmlStreaming)&&s.setDesignDocMode(E)}y.subs.size===0?y.tplStale=!0:d(p,y),r.bump(p)}function S(p,h){const y=r.get(p),E=y.jsSeq=(y.jsSeq||0)+1;try{const x=ze(h);if(y.jsSeq!==E)return;typeof x!="function"?y.logicError=p+".dc.html: <script data-dc-script> must define `class Component extends DCLogic`":(y.logicError=null,y.Logic=x)}catch(x){if(y.jsSeq!==E)return;console.error("[dc-runtime] logic class eval FAILED for",p,"\u2014 the template renders with props only.",x),y.logicError=p+": "+(x instanceof Error&&x.message?x.message:String(x))}r.bump(p)}function v(p,h,y){const E=r.get(p);h==="html"?E.htmlStreaming=!!y:E.jsStreaming=!!y;let x=!1;for(const R in r.entries){const M=r.entries[R];if(M&&(M.htmlStreaming||M.jsStreaming)){x=!0;break}}t.documentElement.classList.toggle("sc-dc-streaming",x),r.bump(p)}function b(p,h,y,E){if(E&&(r.get(p).fetched=!0),h==="html")v(p,"html",!!E),m(p,y);else if(h==="js")v(p,"js",!!E),E||S(p,y);else if(h==="props"){const{props:x,preview:R}=B(y),M=r.get(p);M.propsMeta=x??void 0,M.preview=R,r.bump(p)}}function k(p,h){r.get(p).propOverrides=h&&typeof h=="object"?{...h}:null,r.bump(p)}function w(p,h){if(!h)return;const y=r.get(p);h.props&&(y.propsMeta=h.props),h.preview&&(y.preview=h.preview),h.template&&m(p,h.template),h.js&&S(p,h.js)}return{registry:r,getDC:l.getDC,updateHtml:m,updateJs:S,dcUpdate:b,setProps:k,seekKeyframes:f,keyframesPlayhead:()=>a,adoptParsed:w,setRootName:p=>{u=p},markFetched:p=>{r.get(p).fetched=!0},annotatedTemplate:p=>{g(p);const h=r.get(p);return h.tpl&&h.tpl.__annotated||null},templateSource:p=>r.get(p).html||null,StreamableLogic:I}}function un(t=6e4,n=Date.now){const e=new Map,r=o=>{const s=e.get(o);return s===void 0?!1:n()-s>t?(e.delete(o),!1):!0};return{push(o,s,i){i!=="dc-model"&&(s?e.set(o,n()):e.delete(o))},live(o){if(o!==void 0)return r(o);for(const s of[...e.keys()])if(r(s))return!0;return!1}}}function fn(){const t=document.createElement("style");t.textContent="x-dc{display:none!important}",document.head.appendChild(t)}function Nt(t,n){return new Promise((e,r)=>{const o=document.createElement("script");o.src=t,n&&(o.integrity=n,o.crossOrigin="anonymous"),o.async=!1,o.onload=()=>e(),o.onerror=()=>r(new Error(`failed to load ${t}`)),document.head.appendChild(o)})}function dn(){const t=window;if(t.React&&t.ReactDOM)return Promise.resolve();const n=X(Be,We),e=X($e,qe);return Promise.all([Nt(n.src,n.integrity),Nt(e.src,e.integrity)]).then(()=>{})}function pn(){const t=window.__dcRuntimeMode==="omelette",n=ln(document,{omelette:t});let e="Root",r=!1;const o=document.createElement("style");o.textContent=Dt,document.head.prepend(o);const s=()=>{if(window.parent===window)return;const c=n.registry.entries[e];try{window.parent.postMessage({type:"__dc_booted",rootName:e,mounted:r,propsMeta:c&&c.propsMeta||null,preview:c&&c.preview||null,tellsErrors:!0},"*")}catch{}},i=un();window.parent!==window&&je(Oe(c=>{try{const a={type:"__dc_render_errors",errors:c};window.parent.postMessage(a,"*")}catch{}},c=>{setTimeout(c,200)},()=>i.live()));const l={__dcUpdate:(c,a,f,_,u)=>{i.push(c,_,u),n.dcUpdate(c,a,f,_),c===e&&!_&&a==="props"&&s()},__dcStreaming:c=>i.live(c),__dcSetProps:(c,a)=>n.setProps(c,a),__dcSeekKeyframes:c=>n.seekKeyframes(c),__dcKeyframesPlayhead:()=>n.keyframesPlayhead(),__dcRootName:()=>e,__dcAnnotatedTemplate:c=>n.annotatedTemplate(c),__dcTemplateSource:c=>n.templateSource(c),__dcBoot:()=>{const c=zt(n,document);c!=null&&(e=c,r=!0),s(),Ie()},__dcRegistry:n.registry.entries,getDC:c=>n.getDC(c),DCLogic:n.StreamableLogic,StreamableLogic:n.StreamableLogic};Object.assign(window,l),window.__dcContentKeyed=!0,document.readyState!=="loading"?l.__dcBoot():document.addEventListener("DOMContentLoaded",()=>l.__dcBoot())}fn(),dn().then(pn).catch(t=>{throw console.error("[dc] failed to load React or boot:",t),t})})();
+  `;
+  var FULL_PAGE_CSS = "html,body{height:100%;margin:0}#dc-root,#dc-root>.sc-host{height:100%}";
+  function rootNameForDocument(doc, loc) {
+    let bootPath = loc.pathname || "";
+    if (!/\.dc\.html?$/i.test(safeDecode(bootPath))) {
+      try {
+        bootPath = new URL(doc.baseURI || "/").pathname;
+      } catch {
+      }
+    }
+    return dcNameFromPath(bootPath);
+  }
+  function safeDecode(s) {
+    try {
+      return decodeURIComponent(s);
+    } catch {
+      return s;
+    }
+  }
+  function boot(runtime, doc = document) {
+    const parsed = parseDcDocument(doc);
+    if (!parsed) return null;
+    const React = getReact();
+    const rootName = rootNameForDocument(doc, location);
+    runtime.markFetched(rootName);
+    runtime.setRootName(rootName);
+    runtime.adoptParsed(rootName, parsed);
+    if (!window.__resources) {
+      fetch(location.href).then((res) => res.ok ? res.text() : "").then((t) => {
+        const raw = t ? parseDcText(t) : null;
+        if (raw?.template) runtime.updateHtml(rootName, raw.template);
+      }).catch(() => {
+      });
+    }
+    const dc = doc.querySelector("x-dc");
+    const hostEl = doc.createElement("div");
+    hostEl.id = "dc-root";
+    dc.replaceWith(hostEl);
+    if (!parsed.preview) {
+      const s = doc.createElement("style");
+      s.textContent = FULL_PAGE_CSS;
+      doc.head.appendChild(s);
+    }
+    const Root = runtime.getDC(rootName);
+    const entry = runtime.registry.get(rootName);
+    function StandaloneRoot() {
+      const [, setTick] = React.useState(0);
+      React.useEffect(() => {
+        const sub = () => setTick((n) => n + 1);
+        entry.subs.add(sub);
+        return () => {
+          entry.subs.delete(sub);
+        };
+      }, []);
+      const defaults = React.useMemo(() => {
+        const d = {};
+        for (const k in entry.propsMeta || {}) {
+          const v = entry.propsMeta?.[k]?.default;
+          if (v !== void 0) d[k] = v;
+        }
+        return d;
+      }, [entry.propsMeta]);
+      return h(Root, { ...defaults, ...entry.propOverrides || {} });
+    }
+    const ReactDOM = getReactDOM();
+    if (ReactDOM.createRoot)
+      ReactDOM.createRoot(hostEl).render(h(StandaloneRoot));
+    else ReactDOM.render(h(StandaloneRoot), hostEl);
+    return rootName;
+  }
+
+  // src/expr.ts
+  var IDENT_RE = /^[A-Za-z_$][A-Za-z0-9_$]*/;
+  var NUMBER_RE = /^-?\d+(\.\d+)?$/;
+  function resolve(vals, src) {
+    const expr = String(src).trim();
+    if (!expr) return void 0;
+    if (expr[0] === "(" && expr[expr.length - 1] === ")" && parensWrapWhole(expr)) {
+      return resolve(vals, expr.slice(1, -1));
+    }
+    const eq = findTopLevelEquality(expr);
+    if (eq) {
+      const lv = resolve(vals, expr.slice(0, eq.index));
+      const rv = resolve(vals, expr.slice(eq.index + eq.op.length));
+      switch (eq.op) {
+        case "===":
+          return lv === rv;
+        case "!==":
+          return lv !== rv;
+        case "==":
+          return lv == rv;
+        default:
+          return lv != rv;
+      }
+    }
+    if (expr[0] === "!") return !resolve(vals, expr.slice(1));
+    if (expr === "true") return true;
+    if (expr === "false") return false;
+    if (expr === "null") return null;
+    if (expr === "undefined") return void 0;
+    if (NUMBER_RE.test(expr)) return Number(expr);
+    if (expr.length >= 2 && (expr[0] === '"' || expr[0] === "'") && expr[expr.length - 1] === expr[0]) {
+      return expr.slice(1, -1);
+    }
+    return resolvePath(vals, expr);
+  }
+  function parensWrapWhole(expr) {
+    let depth = 0;
+    for (let i = 0; i < expr.length - 1; i++) {
+      if (expr[i] === "(") depth++;
+      else if (expr[i] === ")") {
+        depth--;
+        if (depth === 0) return false;
+      }
+    }
+    return true;
+  }
+  function findTopLevelEquality(expr) {
+    let depth = 0;
+    for (let i = 0; i < expr.length; i++) {
+      const c = expr[i];
+      if (c === "[" || c === "(") depth++;
+      else if (c === "]" || c === ")") depth--;
+      else if (depth === 0 && (c === "=" || c === "!") && expr[i + 1] === "=") {
+        if (i > 0 && (expr[i - 1] === "=" || expr[i - 1] === "!")) continue;
+        if (!expr.slice(0, i).trim()) continue;
+        const op = expr[i + 2] === "=" ? c + "==" : c + "=";
+        return { index: i, op };
+      }
+    }
+    return null;
+  }
+  function resolvePath(vals, expr) {
+    const head = expr.match(IDENT_RE);
+    if (!head) return void 0;
+    let cur = vals == null ? void 0 : vals[head[0]];
+    let i = head[0].length;
+    while (i < expr.length) {
+      if (expr[i] === ".") {
+        const m = expr.slice(i + 1).match(IDENT_RE) || expr.slice(i + 1).match(/^\d+/);
+        if (!m) return void 0;
+        cur = cur == null ? void 0 : cur[m[0]];
+        i += 1 + m[0].length;
+      } else if (expr[i] === "[") {
+        let depth = 1;
+        let j = i + 1;
+        while (j < expr.length && depth > 0) {
+          if (expr[j] === "[") depth++;
+          else if (expr[j] === "]") {
+            depth--;
+            if (depth === 0) break;
+          }
+          j++;
+        }
+        if (depth !== 0) return void 0;
+        const key = resolve(vals, expr.slice(i + 1, j));
+        cur = cur == null ? void 0 : cur[key];
+        i = j + 1;
+      } else {
+        return void 0;
+      }
+    }
+    return cur;
+  }
+
+  // src/encode.ts
+  var CAMEL_ATTR = "sc-camel-";
+  var INLINE_TEXT_TAGS = new Set(
+    "a abbr b bdi bdo br cite code del dfn em i ins kbd mark q s samp small span strike strong sub sup u var wbr".split(
+      " "
+    )
+  );
+  var RAW_WRAP = {
+    select: "sc-raw-select",
+    table: "sc-raw-table",
+    tbody: "sc-raw-tbody",
+    thead: "sc-raw-thead",
+    tfoot: "sc-raw-tfoot",
+    tr: "sc-raw-tr",
+    td: "sc-raw-td",
+    th: "sc-raw-th",
+    caption: "sc-raw-caption"
+  };
+  var RAW_UNWRAP = Object.fromEntries(
+    Object.entries(RAW_WRAP).map(([k, v]) => [v, k])
+  );
+  var EVENT_MAP = {
+    onclick: "onClick",
+    onchange: "onChange",
+    oninput: "onInput",
+    onsubmit: "onSubmit",
+    onkeydown: "onKeyDown",
+    onkeyup: "onKeyUp",
+    onkeypress: "onKeyPress",
+    onmousedown: "onMouseDown",
+    onmouseup: "onMouseUp",
+    onmouseenter: "onMouseEnter",
+    onmouseleave: "onMouseLeave",
+    onfocus: "onFocus",
+    onblur: "onBlur",
+    ondoubleclick: "onDoubleClick",
+    oncontextmenu: "onContextMenu",
+    onmousemove: "onMouseMove",
+    onmouseover: "onMouseOver",
+    onmouseout: "onMouseOut",
+    onpointerdown: "onPointerDown",
+    onpointerup: "onPointerUp",
+    onpointermove: "onPointerMove",
+    onpointerenter: "onPointerEnter",
+    onpointerleave: "onPointerLeave",
+    onpointercancel: "onPointerCancel",
+    onpointerover: "onPointerOver",
+    onpointerout: "onPointerOut",
+    ongotpointercapture: "onGotPointerCapture",
+    onlostpointercapture: "onLostPointerCapture",
+    ontouchstart: "onTouchStart",
+    ontouchend: "onTouchEnd",
+    ontouchmove: "onTouchMove",
+    ontouchcancel: "onTouchCancel",
+    ondragstart: "onDragStart",
+    ondragend: "onDragEnd",
+    ondragenter: "onDragEnter",
+    ondragleave: "onDragLeave",
+    ondragover: "onDragOver",
+    onanimationstart: "onAnimationStart",
+    onanimationend: "onAnimationEnd",
+    onanimationiteration: "onAnimationIteration",
+    ontransitionend: "onTransitionEnd"
+  };
+  var ATTRS = `(?:[^>"']|"[^"]*"|'[^']*')*`;
+  var IMPORT_SELF_CLOSE_RE = new RegExp(
+    "<(x-import|dc-import)(" + ATTRS + ")/>",
+    "gi"
+  );
+  var CAMEL_ATTR_RE = /(\s)([a-z]+[A-Z][A-Za-z0-9]*)(\s*=)/g;
+  function encodeCamelAttrs(html) {
+    return html.replace(
+      CAMEL_ATTR_RE,
+      (_, sp, name, eq) => sp + CAMEL_ATTR + name.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase()) + eq
+    );
+  }
+  function encodeCase(html) {
+    html = html.replace(
+      IMPORT_SELF_CLOSE_RE,
+      (_, t, a) => "<" + t + a + "></" + t + ">"
+    );
+    html = html.replace(/<helmet(\s|>)/gi, "<sc-helmet$1");
+    html = html.replace(/<\/helmet\s*>/gi, "</sc-helmet>");
+    html = encodeCamelAttrs(html);
+    for (const [real, alias] of Object.entries(RAW_WRAP)) {
+      html = html.replace(
+        new RegExp("(</?)" + real + "(?=[\\s>])", "gi"),
+        "$1" + alias
+      );
+    }
+    return html;
+  }
+  function kebabToCamel(s) {
+    return s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+  }
+  function cssToObj(css) {
+    const o = {};
+    for (const decl of css.split(";")) {
+      const i = decl.indexOf(":");
+      if (i < 0) continue;
+      const prop = decl.slice(0, i).trim();
+      o[prop.startsWith("--") ? prop : kebabToCamel(prop)] = decl.slice(i + 1).trim();
+    }
+    return o;
+  }
+  function compileAttr(raw) {
+    const whole = raw.match(/^\s*\{\{([\s\S]+?)\}\}\s*$/);
+    if (whole) {
+      const path = whole[1];
+      return (vals) => resolve(vals, path);
+    }
+    if (raw.includes("{{")) {
+      const parts = raw.split(/\{\{([\s\S]+?)\}\}/g);
+      return (vals) => parts.map((s, i) => i & 1 ? resolve(vals, s) ?? "" : s).join("");
+    }
+    return () => raw;
+  }
+
+  // src/compile.ts
+  function collectProps(node, kind, host) {
+    const propGetters = [];
+    const pseudoClasses = [];
+    let hintSize = null;
+    for (const { name, value } of [...node.attributes]) {
+      if (name === "sc-name" || name === "data-dc-tpl") continue;
+      let key = name;
+      if (key.startsWith(CAMEL_ATTR))
+        key = kebabToCamel(key.slice(CAMEL_ATTR.length));
+      if (key === "hint-size") {
+        hintSize = value;
+        continue;
+      }
+      if (key.startsWith("style-")) {
+        pseudoClasses.push(host.pseudoClass(key.slice(6), value));
+        continue;
+      }
+      if (kind !== "dom") {
+        if (key.includes("-") && !(kind === "x-import" && (key.startsWith("aria-") || key.startsWith("data-"))))
+          key = kebabToCamel(key);
+      } else {
+        if (key === "class") key = "className";
+        else if (key === "for") key = "htmlFor";
+        else if (key.startsWith("on"))
+          key = EVENT_MAP[key] || "on" + key[2].toUpperCase() + key.slice(3);
+      }
+      propGetters.push([key, compileAttr(value)]);
+    }
+    return { propGetters, pseudoClasses, hintSize };
+  }
+  var HOST_STYLE_PROPS = /* @__PURE__ */ new Set([
+    "position",
+    "left",
+    "right",
+    "top",
+    "bottom",
+    "inset",
+    "width",
+    "height",
+    "z-index",
+    "transform"
+  ]);
+  function hostPositionStyle(style) {
+    const all = typeof style === "string" ? cssToObj(style) : style != null && typeof style === "object" ? style : null;
+    if (!all) return void 0;
+    const out = {};
+    for (const [k, v] of Object.entries(all)) {
+      const kebab = k.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
+      if (HOST_STYLE_PROPS.has(kebab)) out[k] = v;
+    }
+    return Object.keys(out).length ? out : void 0;
+  }
+  function compileTemplate(html, host) {
+    const tpl = document.createElement("template");
+    //! nosemgrep: direct-inner-html-assignment
+    tpl.innerHTML = encodeCase(html);
+    let tplN = 0;
+    (function stamp(node) {
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        node.setAttribute("data-dc-tpl", String(tplN++));
+      }
+      for (const c of node.childNodes) stamp(c);
+    })(tpl.content);
+    const builders = walkChildren(tpl.content, host);
+    const render = ((vals, ctx) => builders.map((b, i) => b(vals || {}, ctx, i)));
+    render.__annotated = tpl.innerHTML;
+    return render;
+  }
+  function walkChildren(node, host) {
+    return [...node.childNodes].map((c) => walk(c, host)).filter((b) => b != null);
+  }
+  var SLIDE_ID_VALUE_RE = /^[0-9a-f]{8}$/;
+  var DECK_CONTROL_FLOW_RE = /^(sc-if|sc-for|sc-else|dc-import|x-import)$/;
+  var DECK_AUX_RE = /^(template|script|style|sc-helmet|helmet)$/;
+  function isDeckMountTag(el) {
+    if (el.localName === "deck-stage") return true;
+    return el.localName === "x-import" && (el.getAttribute("component-from-global-scope") || "") === "deck-stage";
+  }
+  function walkDeckChildren(el, host) {
+    const pairs = [...el.childNodes].map((c) => ({ c, b: walk(c, host) })).filter((p) => p.b !== null);
+    const kids = pairs.map((p) => p.b);
+    const seen = /* @__PURE__ */ new Set();
+    const wsSeen = /* @__PURE__ */ new Map();
+    const keys = [];
+    const nextSlideId = new Array(pairs.length);
+    {
+      let upcoming = null;
+      for (let j = pairs.length - 1; j >= 0; j--) {
+        const n = pairs[j].c;
+        if (n.nodeType === Node.ELEMENT_NODE) {
+          const t = n.localName;
+          upcoming = !DECK_AUX_RE.test(t) && !DECK_CONTROL_FLOW_RE.test(t) ? n.getAttribute("data-om-slide-id") : null;
+        }
+        nextSlideId[j] = upcoming;
+      }
+    }
+    for (let j = 0; j < pairs.length; j++) {
+      const { c } = pairs[j];
+      if (c.nodeType === Node.TEXT_NODE) {
+        if ((c.nodeValue ?? "").trim() === "") {
+          const base = nextSlideId[j] ? "omid-ws:" + nextSlideId[j] : "omid-ws:aux";
+          const n = wsSeen.get(base) ?? 0;
+          wsSeen.set(base, n + 1);
+          keys.push(n === 0 ? base : base + ":" + n);
+          continue;
+        }
+        return { kids, keys: null };
+      }
+      if (c.nodeType !== Node.ELEMENT_NODE) {
+        keys.push(j);
+        continue;
+      }
+      const child = c;
+      const tag = child.localName;
+      if (DECK_AUX_RE.test(tag)) {
+        keys.push(j);
+        continue;
+      }
+      if (DECK_CONTROL_FLOW_RE.test(tag)) return { kids, keys: null };
+      const v = child.getAttribute("data-om-slide-id");
+      if (!v || !SLIDE_ID_VALUE_RE.test(v) || seen.has(v)) {
+        return { kids, keys: null };
+      }
+      seen.add(v);
+      keys.push("omid:" + v);
+    }
+    return { kids, keys };
+  }
+  function renderDeckKids(kids, kidKeys, vals, ctx) {
+    return kids.map((b, j) => {
+      const k = kidKeys ? kidKeys[j] : j;
+      const out = b(vals, ctx, k);
+      return kidKeys != null && typeof out === "string" ? h(getReact().Fragment, { key: k }, out) : out;
+    });
+  }
+  function walk(node, host) {
+    if (node.nodeType === Node.TEXT_NODE) return walkText(node);
+    if (node.nodeType !== Node.ELEMENT_NODE) return null;
+    const el = node;
+    const tag = el.tagName.toLowerCase();
+    if (tag === "sc-for") return walkFor(el, host);
+    if (tag === "sc-if") return walkIf(el, host);
+    if (tag === "x-import") return walkXImport(el, host);
+    if (tag === "sc-helmet") return host.helmet(el);
+    if (tag === "dc-import") return walkComponent(el, host);
+    return walkElement(el, host);
+  }
+  var warnedHoles = /* @__PURE__ */ new Set();
+  function warnUnresolved(ctx, what) {
+    const key = (ctx?.__name || "?") + "\0" + what;
+    if (warnedHoles.has(key)) return;
+    warnedHoles.add(key);
+    console.warn("[dc-runtime] " + (ctx?.__name || "template") + ": " + what);
+  }
+  function walkText(node) {
+    const txt = node.nodeValue ?? "";
+    if (!txt.includes("{{")) {
+      if (!txt.trim() && !txt.includes(" ")) return null;
+      return () => txt;
+    }
+    const parts = txt.split(/\{\{([\s\S]+?)\}\}/g);
+    return (vals, ctx, key) => h(
+      getReact().Fragment,
+      { key },
+      ...parts.map((p, i) => {
+        if (!(i & 1)) return p;
+        const v = resolve(vals, p);
+        if (v === void 0) {
+          if (!ctx?.__streamingNow) {
+            if (document.body?.hasAttribute("data-dc-editor-on")) {
+              return h(
+                "span",
+                { key: i, className: "sc-interp sc-unresolved" },
+                "{{ " + p.trim() + " }}"
+              );
+            }
+            warnUnresolved(
+              ctx,
+              "{{ " + p.trim() + " }} never resolved \u2014 rendered as empty"
+            );
+            return null;
+          }
+          return h(
+            "span",
+            { key: i, className: "sc-interp sc-missing" },
+            p.trim()
+          );
+        }
+        if (getReact().isValidElement(v) || Array.isArray(v)) {
+          return h(getReact().Fragment, { key: i }, v);
+        }
+        if (v === null || typeof v === "boolean") return null;
+        return h("span", { key: i, className: "sc-interp" }, String(v));
+      })
+    );
+  }
+  function walkFor(el, host) {
+    const listGet = compileAttr(el.getAttribute("list") || "");
+    const asName = el.getAttribute("as") || "item";
+    const hintN = parseInt(el.getAttribute("hint-placeholder-count") || "0", 10);
+    const kids = walkChildren(el, host);
+    const listSrc = el.getAttribute("list") || "";
+    return (vals, ctx, key) => {
+      let list = listGet(vals);
+      if (!Array.isArray(list)) {
+        if (!ctx?.__streamingNow) {
+          if (list !== void 0 && list !== null) {
+            warnUnresolved(
+              ctx,
+              'sc-for list="' + listSrc + '" is not an array (' + typeof list + ")"
+            );
+          }
+          list = [];
+        } else {
+          list = hintN > 0 ? Array(hintN).fill(void 0) : [];
+        }
+      }
+      return h(
+        getReact().Fragment,
+        { key },
+        list.map((item, i) => {
+          const sub = { ...vals, [asName]: item, $index: i };
+          return h(
+            getReact().Fragment,
+            { key: i },
+            kids.map((b, j) => b(sub, ctx, j))
+          );
+        })
+      );
+    };
+  }
+  function walkIf(el, host) {
+    const valGet = compileAttr(el.getAttribute("value") || "");
+    const hintRaw = el.getAttribute("hint-placeholder-val");
+    const hintGet = hintRaw != null ? compileAttr(hintRaw) : null;
+    const kids = walkChildren(el, host);
+    return (vals, ctx, key) => {
+      let v = valGet(vals);
+      if (v === void 0 && hintGet && ctx?.__streamingNow) v = hintGet(vals);
+      return v ? h(
+        getReact().Fragment,
+        { key },
+        kids.map((b, j) => b(vals, ctx, j))
+      ) : null;
+    };
+  }
+  function walkComponent(el, host) {
+    const name = el.getAttribute("name") || el.getAttribute("component") || "";
+    el.removeAttribute("name");
+    el.removeAttribute("component");
+    const tplId = el.getAttribute("data-dc-tpl");
+    const styleRaw = el.getAttribute("style");
+    el.removeAttribute("style");
+    const styleGet = styleRaw != null ? compileAttr(styleRaw) : null;
+    const { propGetters, hintSize } = collectProps(el, "dc-import", host);
+    const kids = walkChildren(el, host);
+    return (vals, ctx, key) => {
+      const props = {
+        key,
+        __hintSize: hintSize,
+        __tplId: tplId,
+        __hostStyle: styleGet ? hostPositionStyle(styleGet(vals)) : void 0
+      };
+      for (const [k, g] of propGetters) {
+        const v = g(vals);
+        if (k === "dcProps") {
+          if (v && typeof v === "object") Object.assign(props, v);
+          continue;
+        }
+        props[k] = v;
+      }
+      if (kids.length) props.children = kids.map((b, j) => b(vals, ctx, j));
+      return h(host.component(name), props);
+    };
+  }
+  function walkXImport(el, host) {
+    const globalNameGet = compileAttr(
+      el.getAttribute("component-from-global-scope") || ""
+    );
+    const exportNameGet = compileAttr(
+      el.getAttribute("component") || el.getAttribute("name") || ""
+    );
+    const fromRaw = el.getAttribute("from") || (el.getAttribute("component-from-global-scope") ? "" : el.getAttribute("src") || el.getAttribute("import") || "");
+    const urls = fromRaw.trim() ? fromRaw.trim().split(/\s+/) : [];
+    const url = urls.length ? urls[urls.length - 1] : "";
+    const kindOf = (u) => /\.(jsx|tsx)(\?|#|$)/i.test(u) ? "jsx" : "js";
+    const tplId = el.getAttribute("data-dc-tpl");
+    const styleRaw = el.getAttribute("style");
+    el.removeAttribute("style");
+    const styleGet = styleRaw != null ? compileAttr(styleRaw) : null;
+    const wrap = tplId != null || styleGet != null;
+    const { propGetters, hintSize } = collectProps(el, "x-import", host);
+    const hasContent = el.children.length > 0 || !!(el.textContent || "").trim();
+    const deckKeyed = hasContent && isDeckMountTag(el) ? walkDeckChildren(el, host) : null;
+    const kids = deckKeyed ? deckKeyed.kids : hasContent ? walkChildren(el, host) : [];
+    const kidKeys = deckKeyed?.keys ?? null;
+    const urlBindable = fromRaw.includes("{{");
+    if (urls.length && !urlBindable) {
+      let prev;
+      for (const u of urls) prev = host.loadExternal(kindOf(u), u, prev);
+    }
+    const evalName = (g, vals) => {
+      const v = g(vals);
+      const s = v == null ? "" : String(v);
+      return s.includes("{{") ? "" : s;
+    };
+    return (vals, ctx, key) => {
+      const globalName = evalName(globalNameGet, vals);
+      const name = globalName || evalName(exportNameGet, vals);
+      const C = !name || urlBindable ? null : globalName ? host.resolveExternalGlobal(url, globalName) : host.resolveExternal(url, name);
+      const hostStyle = styleGet ? hostPositionStyle(styleGet(vals)) : void 0;
+      const wrapper = wrap ? {
+        key,
+        className: "sc-host-x",
+        "data-dc-tpl": tplId,
+        style: hostStyle || { display: "contents" }
+      } : null;
+      if (!C) {
+        const error = urlBindable ? "x-import `from` cannot contain {{ \u2026 }} \u2014 module URLs are resolved at parse time; use a literal URL" : host.resolveExternalError(url, name);
+        const ph = host.placeholder({
+          key: wrapper ? void 0 : key,
+          name,
+          hintSize,
+          error
+        });
+        return wrapper ? h("div", wrapper, ph) : ph;
+      }
+      const props = wrapper ? {} : { key };
+      let unresolvedHole = false;
+      for (const [k, g] of propGetters) {
+        if (k === "component" || k === "componentFromGlobalScope" || k === "from") {
+          continue;
+        }
+        const v = g(vals);
+        if (v === void 0) unresolvedHole = true;
+        if (k === "dcProps") {
+          if (v && typeof v === "object") Object.assign(props, v);
+          continue;
+        }
+        props[k] = v;
+      }
+      if (unresolvedHole && ctx?.__htmlStreamingNow) {
+        const ph = host.placeholder({
+          key: wrapper ? void 0 : key,
+          name,
+          hintSize,
+          error: null
+        });
+        return wrapper ? h("div", wrapper, ph) : ph;
+      }
+      if (kids.length) {
+        props.children = renderDeckKids(kids, kidKeys, vals, ctx);
+      }
+      return wrapper ? h("div", wrapper, h(C, props)) : h(C, props);
+    };
+  }
+  function contentKey(el) {
+    const clone = el.cloneNode(true);
+    for (const d of clone.querySelectorAll("*")) {
+      while (d.attributes.length) d.removeAttribute(d.attributes[0].name);
+    }
+    const s = clone.innerHTML;
+    let h2 = 5381;
+    for (let i = 0; i < s.length; i++) h2 = (h2 << 5) + h2 + s.charCodeAt(i) | 0;
+    return s.length + "." + (h2 >>> 0).toString(36);
+  }
+  var NEVER_CONTENT_KEYED = new Set(
+    "script style textarea option title select canvas iframe video audio".split(
+      " "
+    )
+  );
+  var NOT_INLINE_SELECTOR = ":not(" + [...INLINE_TEXT_TAGS].join(",") + ")";
+  function walkElement(el, host) {
+    const realTag = RAW_UNWRAP[el.localName] || el.localName;
+    const tplId = el.getAttribute("data-dc-tpl");
+    const inlineOnly = el.childNodes.length > 0 && !NEVER_CONTENT_KEYED.has(realTag) && el.querySelector(NOT_INLINE_SELECTOR) === null;
+    const keySuffix = inlineOnly ? "|" + contentKey(el) : "";
+    const { propGetters, pseudoClasses } = collectProps(el, "dom", host);
+    const deckKeyed = isDeckMountTag(el) ? walkDeckChildren(el, host) : null;
+    const kids = deckKeyed ? deckKeyed.kids : walkChildren(el, host);
+    const kidKeys = deckKeyed?.keys ?? null;
+    return (vals, ctx, key) => {
+      const props = {
+        key: key + keySuffix,
+        "data-dc-tpl": tplId
+      };
+      for (const [k, g] of propGetters) {
+        let v = g(vals);
+        if (k === "style" && typeof v === "string") v = cssToObj(v);
+        if ((k === "value" || k === "checked") && v === void 0) {
+          v = k === "checked" ? false : "";
+        }
+        props[k] = v;
+      }
+      if (pseudoClasses.length) {
+        props.className = [props.className, ...pseudoClasses].filter(Boolean).join(" ");
+      }
+      return h(realTag, props, ...renderDeckKids(kids, kidKeys, vals, ctx));
+    };
+  }
+
+  // src/logic.ts
+  var StreamableLogic = class {
+    constructor(props) {
+      __publicField(this, "props");
+      __publicField(this, "state", {});
+      /** Back-pointer to the wrapper component, installed after construction. */
+      __publicField(this, "__host");
+      this.props = props || {};
+    }
+    setState(update, cb) {
+      this.__host && this.__host.__setLogicState(update, cb);
+    }
+    forceUpdate() {
+      this.__host && this.__host.forceUpdate();
+    }
+    componentDidMount() {
+    }
+    componentDidUpdate(_prevProps) {
+    }
+    componentWillUnmount() {
+    }
+    /** The flat object the template renders against (merged over props). */
+    renderVals() {
+      return {};
+    }
+  };
+  function evalDcLogic(src) {
+    //! nosemgrep: eval-and-function-constructor
+    const fn = new Function(
+      "DCLogic",
+      "StreamableLogic",
+      "React",
+      src + '\n;return (typeof Component!=="undefined"&&Component)||undefined;'
+    );
+    return fn(StreamableLogic, StreamableLogic, getReact());
+  }
+
+  // src/component.ts
+  function shallowEqual(a, b) {
+    if (!b) return false;
+    const ak = Object.keys(a).filter((k) => k !== "children");
+    const bk = Object.keys(b).filter((k) => k !== "children");
+    if (ak.length !== bk.length) return false;
+    for (const k of ak) if (a[k] !== b[k]) return false;
+    return true;
+  }
+  function Placeholder({
+    name,
+    hintSize,
+    streaming,
+    error
+  }) {
+    const [w, hgt] = (hintSize || "100%,60px").split(",");
+    return h(
+      "div",
+      {
+        className: "sc-placeholder" + (streaming ? " sc-streaming" : ""),
+        style: { width: w.trim(), height: hgt && hgt.trim() },
+        title: name
+      },
+      error ? h(
+        "div",
+        { className: "sc-placeholder-error" },
+        (name ? name + ": " : "") + error
+      ) : null
+    );
+  }
+  function hintToMin(hint) {
+    if (!hint) return void 0;
+    const [w, hgt] = hint.split(",");
+    return { minWidth: w.trim(), minHeight: hgt && hgt.trim() };
+  }
+  function createComponentFactory(registry, ensureFetched) {
+    const React = getReact();
+    const AncestorContext = React.createContext([]);
+    class StreamableComponent extends React.Component {
+      constructor(props) {
+        super(props);
+        __publicField(this, "__name");
+        __publicField(this, "__sub");
+        __publicField(this, "__needsDidMount", false);
+        /** Snapshot of the registry's streaming flags taken at render time —
+         *  builders read it off the RenderCtx (this) to pick placeholder vs
+         *  render-nothing for unresolved values. */
+        __publicField(this, "__streamingNow", false);
+        __publicField(this, "__htmlStreamingNow", false);
+        /** When a construct throws, remember the (class, registry.ver, props)
+         *  triple so render-time reconcile doesn't re-attempt it on every parent
+         *  re-render. A registry bump (new class, template, external module
+         *  resolving via bumpAll) changes `ver` and breaks the memo so an
+         *  env-dependent constructor can self-heal. */
+        __publicField(this, "__failedLogic", null);
+        __publicField(this, "__failedUserProps", null);
+        __publicField(this, "__failedVer", -1);
+        /** Per-instance constructor error — kept here (not on the registry entry)
+         *  so one instance's successful construct can't hide a sibling's failure,
+         *  and a construct can never wipe an eval error `updateJs` recorded on
+         *  `r.logicError`. */
+        __publicField(this, "__ctorError", null);
+        __publicField(this, "logic");
+        this.__name = props.__name;
+        this.state = { __v: 0, __err: null };
+        this.__sub = () => {
+          if (this.state.__err) this.setState({ __err: null });
+          this.forceUpdate();
+        };
+        this.__makeLogic(registry.get(this.__name).Logic, null);
+        ensureFetched(this.__name);
+      }
+      /** Error-boundary hook: a render crash anywhere in this DC's subtree
+       *  (its own template, an x-import'd component, a child DC without its
+       *  own deeper boundary) lands here instead of unmounting the page. */
+      static getDerivedStateFromError(e) {
+        return { __err: e instanceof Error && e.message ? e.message : String(e) };
+      }
+      componentDidCatch(e, info) {
+        console.error(
+          "[dc-runtime] render error in <" + this.__name + ">:",
+          e,
+          info?.componentStack || ""
+        );
+      }
+      /** Instantiate the logic class (or the no-op base) and adopt `prevState`
+       *  over its initial state — used both at mount and on hot-swap. */
+      __makeLogic(Logic, prevState) {
+        const L = Logic || StreamableLogic;
+        try {
+          this.logic = new L(this.__userProps());
+          this.__failedLogic = null;
+          this.__failedUserProps = null;
+          this.__ctorError = null;
+        } catch (e) {
+          console.error(e);
+          this.__failedLogic = Logic;
+          this.__failedUserProps = this.__userProps();
+          this.__failedVer = registry.get(this.__name).ver;
+          this.__ctorError = this.__name + ": " + (e instanceof Error && e.message ? e.message : String(e));
+          this.logic = new StreamableLogic(
+            this.__userProps()
+          );
+        }
+        this.logic.__host = this;
+        if (prevState)
+          this.logic.state = { ...this.logic.state || {}, ...prevState };
+      }
+      /** The props the author's logic + template see — internal __-prefixed
+       *  wiring stripped. */
+      __userProps() {
+        const { __name, __hintSize, __tplId, __hostStyle, ...rest } = this.props;
+        return rest;
+      }
+      __setLogicState(update, cb) {
+        const prev = this.logic.state;
+        const patch = typeof update === "function" ? update(prev) : update;
+        this.logic.state = { ...prev, ...patch };
+        this.setState((s) => ({ __v: s.__v + 1 }), cb);
+      }
+      /** Swap the logic instance when the registry's Logic class changed
+       *  (streaming completion, hot reload). State carries over; didMount
+       *  re-fires after the swap commits so refs exist. */
+      __reconcileLogic() {
+        const r = registry.get(this.__name);
+        const Next = r.Logic;
+        const Cur = this.logic.constructor;
+        if (Next === Cur || !Next && Cur === StreamableLogic || Next === this.__failedLogic && r.ver === this.__failedVer && shallowEqual(this.__userProps(), this.__failedUserProps)) {
+          return;
+        }
+        if (!this.__needsDidMount) {
+          try {
+            this.logic.componentWillUnmount();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        this.__makeLogic(Next, this.logic.state);
+        this.__needsDidMount = true;
+      }
+      componentDidMount() {
+        registry.get(this.__name).subs.add(this.__sub);
+        try {
+          this.logic.componentDidMount();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      componentDidUpdate(prevProps) {
+        this.logic.props = this.__userProps();
+        if (this.__needsDidMount) {
+          if (this.state.__err || !registry.get(this.__name).tpl) return;
+          this.__needsDidMount = false;
+          try {
+            this.logic.componentDidMount();
+          } catch (e) {
+            console.error(e);
+          }
+        } else {
+          try {
+            this.logic.componentDidUpdate(prevProps);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
+      componentWillUnmount() {
+        registry.get(this.__name).subs.delete(this.__sub);
+        if (!this.__needsDidMount) {
+          try {
+            this.logic.componentWillUnmount();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
+      render() {
+        const r = registry.get(this.__name);
+        const cls = "sc-host" + (r.htmlStreaming ? " sc-streaming-html" : "") + (r.jsStreaming ? " sc-streaming-js" : "");
+        const hintStyle = r.htmlStreaming ? hintToMin(this.props.__hintSize) : void 0;
+        const hostStyle = this.props.__hostStyle || hintStyle ? { ...hintStyle || {}, ...this.props.__hostStyle || {} } : void 0;
+        const hostBase = {
+          className: cls,
+          style: hostStyle,
+          "data-sc-name": this.__name,
+          "data-dc-tpl": this.props.__tplId
+        };
+        const chain = Array.isArray(this.context) ? this.context : [];
+        if (chain.includes(this.__name)) {
+          const cycle = [
+            ...chain.slice(chain.indexOf(this.__name)),
+            this.__name
+          ].join(" \u2192 ");
+          return h(
+            "div",
+            { ...hostBase, className: cls + " sc-has-error" },
+            h(Placeholder, {
+              name: this.__name,
+              hintSize: this.props.__hintSize,
+              error: "circular import: " + cycle
+            })
+          );
+        }
+        if (this.state.__err) {
+          return h(
+            "div",
+            { ...hostBase, className: cls + " sc-has-error" },
+            h(
+              "div",
+              { className: "sc-logic-error", "data-omelette-chrome": "" },
+              this.__name + ": " + this.state.__err
+            ),
+            h(Placeholder, {
+              name: this.__name,
+              hintSize: this.props.__hintSize,
+              error: this.state.__err
+            })
+          );
+        }
+        this.__reconcileLogic();
+        if (!r.tpl) {
+          return h(
+            "div",
+            hostBase,
+            h(Placeholder, { name: this.__name, hintSize: this.props.__hintSize })
+          );
+        }
+        const userProps = this.__userProps();
+        this.logic.props = userProps;
+        let vals = userProps;
+        let renderErr = r.logicError || this.__ctorError;
+        try {
+          vals = { ...userProps, ...this.logic.renderVals() || {} };
+        } catch (e) {
+          console.error(e);
+          renderErr = this.__name + ".renderVals(): " + (e instanceof Error && e.message ? e.message : String(e));
+        }
+        this.__streamingNow = !!(r.htmlStreaming || r.jsStreaming);
+        this.__htmlStreamingNow = !!r.htmlStreaming;
+        return h(
+          "div",
+          { ...hostBase, className: cls + (renderErr ? " sc-has-error" : "") },
+          renderErr && h(
+            "div",
+            { className: "sc-logic-error", "data-omelette-chrome": "" },
+            renderErr
+          ),
+          h(
+            AncestorContext.Provider,
+            { value: [...chain, this.__name] },
+            r.tpl(vals, this)
+          )
+        );
+      }
+    }
+    __publicField(StreamableComponent, "contextType", AncestorContext);
+    const named = /* @__PURE__ */ new Map();
+    function getDC(name) {
+      const hit = named.get(name);
+      if (hit) return hit;
+      function Dispatcher(p) {
+        const [, setTick] = React.useState(0);
+        React.useEffect(() => {
+          const sub = () => setTick((n) => n + 1);
+          registry.get(name).subs.add(sub);
+          return () => {
+            registry.get(name).subs.delete(sub);
+          };
+        }, []);
+        ensureFetched(name);
+        return h(StreamableComponent, { ...p, __name: name });
+      }
+      Dispatcher.displayName = name;
+      named.set(name, Dispatcher);
+      return Dispatcher;
+    }
+    return {
+      getDC,
+      StreamableComponent
+    };
+  }
+
+  // src/bundled.ts
+  function bundledBlob(url) {
+    const blobs = window.__resourceBlobs;
+    const b = blobs ? blobs[url.split("#")[0]] : void 0;
+    return b instanceof Blob ? b : null;
+  }
+
+  // src/cdn.ts
+  var REACT_URL = "https://unpkg.com/react@18.3.1/umd/react.production.min.js";
+  var REACT_SRI = "sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z";
+  var REACT_DOM_URL = "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js";
+  var REACT_DOM_SRI = "sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1";
+  var BABEL_URL = "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js";
+  var BABEL_SRI = "sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y";
+  function cdnScriptFor(url, sri) {
+    const res = window.__resources;
+    const v = res ? res[url] : void 0;
+    return typeof v === "string" && v ? { src: v } : { src: url, integrity: sri };
+  }
+
+  // src/external.ts
+  var isCustomElementName = (n) => !n.includes(".") && n.includes("-");
+  function isRenderableType(g) {
+    if (typeof g === "function") return !isElementClass(g);
+    return typeof g === "object" && g !== null && typeof g.$$typeof === "symbol";
+  }
+  function resolveDottedPath(root, name) {
+    let cur = root;
+    for (const seg of name.split(".")) {
+      if (cur == null) return void 0;
+      cur = cur[seg];
+    }
+    return cur;
+  }
+  var GLOBAL_POLL_INTERVAL_MS = 50;
+  var GLOBAL_POLL_TIMEOUT_MS = 3e4;
+  function createExternalModules(onResolved) {
+    const cache = /* @__PURE__ */ new Map();
+    let babelLoading = null;
+    const reportedMissing = /* @__PURE__ */ new Map();
+    const polling = /* @__PURE__ */ new Set();
+    function ensureBabel() {
+      if (window.Babel) return Promise.resolve();
+      if (babelLoading) return babelLoading;
+      const babel = cdnScriptFor(BABEL_URL, BABEL_SRI);
+      babelLoading = new Promise((res, rej) => {
+        const s = document.createElement("script");
+        s.src = babel.src;
+        if (babel.integrity) {
+          s.integrity = babel.integrity;
+          s.crossOrigin = "anonymous";
+        }
+        s.onload = () => res();
+        s.onerror = rej;
+        document.head.appendChild(s);
+      });
+      return babelLoading;
+    }
+    const pending = /* @__PURE__ */ new Map();
+    function load(kind, url, after) {
+      const existing = pending.get(url);
+      if (existing) return existing;
+      cache.set(url, null);
+      console.info("[dc-runtime] x-import: loading", url, "(" + kind + ")");
+      const ready = Promise.all([
+        kind === "jsx" ? ensureBabel() : Promise.resolve(),
+        after ?? Promise.resolve()
+      ]);
+      const p = ready.then(() => {
+        const pre = bundledBlob(url);
+        if (pre) return pre.text();
+        return fetch(url).then((r) => {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.text();
+        });
+      }).then((src) => {
+        const code = kind === "jsx" ? window.Babel.transform(src, {
+          filename: url,
+          presets: ["react", "typescript"]
+        }).code : src;
+        const module = { exports: {} };
+        const before = new Set(Object.keys(window));
+        //! nosemgrep: eval-and-function-constructor
+        new Function("React", "module", "exports", "require", code)(
+          getReact(),
+          module,
+          module.exports,
+          () => ({})
+        );
+        const globals = {};
+        for (const k of Object.keys(window)) {
+          if (!before.has(k) && typeof window[k] === "function") {
+            globals[k] = window[k];
+          }
+        }
+        cache.set(url, { mod: module.exports, globals });
+        console.info(
+          "[dc-runtime] x-import: loaded",
+          url,
+          "\u2014 exports:",
+          Object.keys(module.exports),
+          "window globals:",
+          Object.keys(globals)
+        );
+        onResolved();
+      }).catch((e) => {
+        cache.set(url, {
+          mod: {},
+          globals: {},
+          error: "failed to load: " + (e instanceof Error && e.message ? e.message : String(e))
+        });
+        console.error(
+          "[dc-runtime] x-import: FAILED to load",
+          url,
+          "(" + kind + ")",
+          e
+        );
+        onResolved();
+      });
+      pending.set(url, p);
+      return p;
+    }
+    function resolve2(url, name) {
+      const entry = cache.get(url);
+      if (!entry) return null;
+      const { mod, globals } = entry;
+      const C = mod && mod[name] || globals && globals[name] || typeof window !== "undefined" && window[name] || mod && mod.default;
+      if (typeof C === "function") return C;
+      const key = url + "\0" + name;
+      if (!reportedMissing.has(key)) {
+        reportedMissing.set(
+          key,
+          entry.error || 'no export named "' + name + '" (has: ' + Object.keys(mod).join(", ") + ")"
+        );
+        console.error(
+          "[dc-runtime] x-import: module",
+          url,
+          "loaded but has no component named",
+          JSON.stringify(name),
+          "\u2014 available exports:",
+          Object.keys(mod),
+          "window globals:",
+          Object.keys(globals),
+          ". The module must `module.exports = {" + name + "}` or set `window." + name + "`."
+        );
+      }
+      return null;
+    }
+    function waitForGlobal(name) {
+      if (polling.has(name)) return;
+      polling.add(name);
+      const started = Date.now();
+      const isCE = isCustomElementName(name);
+      const tick = () => {
+        const found = isCE ? customElements.get(name) : isRenderableType(resolveDottedPath(window, name));
+        if (found) {
+          polling.delete(name);
+          onResolved();
+          return;
+        }
+        if (Date.now() - started >= GLOBAL_POLL_TIMEOUT_MS) {
+          console.warn(
+            "[dc-runtime] x-import: global",
+            JSON.stringify(name),
+            "never appeared on window after " + GLOBAL_POLL_TIMEOUT_MS + "ms"
+          );
+          return;
+        }
+        setTimeout(tick, GLOBAL_POLL_INTERVAL_MS);
+      };
+      setTimeout(tick, GLOBAL_POLL_INTERVAL_MS);
+    }
+    function resolveGlobal(url, name) {
+      const isCE = isCustomElementName(name);
+      if (!url) {
+        if (isCE) {
+          if (customElements.get(name)) return name;
+          waitForGlobal(name);
+          return null;
+        }
+        const g2 = resolveDottedPath(window, name);
+        if (isRenderableType(g2)) return g2;
+        waitForGlobal(name);
+        return null;
+      }
+      const entry = cache.get(url);
+      if (!entry) return null;
+      if (isCE && customElements.get(name)) return name;
+      const g = entry.globals[name] ?? resolveDottedPath(window, name);
+      if (isRenderableType(g)) return g;
+      if (name.includes(".")) return null;
+      const key = url + "\0global\0" + name;
+      if (!reportedMissing.has(key)) {
+        reportedMissing.set(key, null);
+        if (isCE && !customElements.get(name)) {
+          console.warn(
+            "[dc-runtime] x-import:",
+            url,
+            "loaded but no custom element",
+            JSON.stringify(name),
+            "is registered and window." + name + " is not a function \u2014 rendering <" + name + "> as an unknown element."
+          );
+        }
+      }
+      return name;
+    }
+    function getError(url, name) {
+      const entry = cache.get(url);
+      if (entry?.error) return entry.error;
+      return reportedMissing.get(url + "\0" + name) || null;
+    }
+    return { load, resolve: resolve2, resolveGlobal, getError };
+  }
+  function isElementClass(g) {
+    try {
+      return typeof g === "function" && typeof HTMLElement !== "undefined" && g.prototype instanceof HTMLElement;
+    } catch {
+      return false;
+    }
+  }
+
+  // src/atomics.ts
+  var ATOMIC_CSS = (
+    // layout
+    ".fx{display:flex}.col{display:flex;flex-direction:column}.grid{display:grid}.ac{align-items:center}.jc{justify-content:center}.jb{justify-content:space-between}.f1{flex:1}.noshrink{flex-shrink:0}.wrap{flex-wrap:wrap}.fw5{font-weight:500}.fw6{font-weight:600}.fw7{font-weight:700}.fw8{font-weight:800}.fs11{font-size:11px}.fs12{font-size:12px}.fs13{font-size:13px}.fs14{font-size:14px}.fs15{font-size:15px}.fs16{font-size:16px}.fs20{font-size:20px}.fs22{font-size:22px}.upper{text-transform:uppercase}.tc{text-align:center}.nowrap{white-space:nowrap}.gap8{gap:8px}.gap10{gap:10px}.gap12{gap:12px}.gap16{gap:16px}.gap24{gap:24px}.m0{margin:0}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.posrel{position:relative}.posabs{position:absolute}.round{border-radius:50%}.ohide{overflow:hidden}.bbox{box-sizing:border-box}.pointer{cursor:pointer}.w100{width:100%}.b0{border:none}"
+  );
+
+  // src/helmet.ts
+  var DESIGN_DOC_MODE_RE = /<meta\b[^>]*\bname\s*=\s*["']design_doc_mode["'][^>]*\b(?:content|value)\s*=\s*["'](\w+)["']/i;
+  var CANVAS_BG_LIGHT = "#f0eee6";
+  var CANVAS_BG_DARK = "#2e2c26";
+  function createHelmetManager(doc, isStreaming) {
+    const mounted = /* @__PURE__ */ new Set();
+    const live = /* @__PURE__ */ new Map();
+    let designDocMode = null;
+    let canvasStyleEl = null;
+    let appTheme = "light";
+    try {
+      const ds = doc.documentElement.dataset.theme;
+      appTheme = ds === "dark" || ds === "light" ? ds : new URLSearchParams(doc.defaultView?.location.search ?? "").get(
+        "theme"
+      ) === "dark" ? "dark" : "light";
+    } catch {
+    }
+    function applyCanvasBg() {
+      if (!canvasStyleEl) return;
+      const bg = appTheme === "dark" ? CANVAS_BG_DARK : CANVAS_BG_LIGHT;
+      canvasStyleEl.textContent = `html,body{background:${bg}}#dc-root>.sc-host{position:relative}`;
+    }
+    function postDesignMode(mode) {
+      if (window.parent === window) return;
+      try {
+        window.parent.postMessage({ type: "__dc_design_mode", mode }, "*");
+      } catch {
+      }
+    }
+    function setDesignDocMode(mode) {
+      if (mode === designDocMode) return;
+      designDocMode = mode;
+      postDesignMode(mode);
+      if (mode === "canvas") {
+        doc.documentElement.setAttribute("data-dc-canvas", "");
+        canvasStyleEl = doc.createElement("style");
+        canvasStyleEl.setAttribute("data-dc-canvas", "");
+        applyCanvasBg();
+        doc.head.appendChild(canvasStyleEl);
+      } else {
+        doc.documentElement.removeAttribute("data-dc-canvas");
+        canvasStyleEl?.remove();
+        canvasStyleEl = null;
+      }
+    }
+    window.addEventListener("message", (e) => {
+      const type = e.data && e.data.type;
+      if (type === "__dc_theme") {
+        const t = e.data.theme;
+        if (t === "light" || t === "dark") {
+          appTheme = t;
+          applyCanvasBg();
+        }
+        return;
+      }
+      if (!designDocMode || type !== "__dc_probe") return;
+      postDesignMode(designDocMode);
+    });
+    function compile(node) {
+      const raw = [...node.children];
+      const helmetClosed = node.nextSibling != null || node.parentNode?.nextSibling != null;
+      if (node.hasAttribute("data-dc-atomics") && !mounted.has("__dc-atomics")) {
+        mounted.add("__dc-atomics");
+        const el = doc.createElement("style");
+        el.id = "__dc-atomics";
+        el.textContent = ATOMIC_CSS;
+        doc.head.appendChild(el);
+      }
+      return (_vals, ctx) => {
+        const name = ctx && ctx.__name || "";
+        const streaming = !!(name && isStreaming(name));
+        for (let i = 0; i < raw.length; i++) {
+          const child = raw[i];
+          const tag = child.tagName;
+          const mayBePartial = streaming && !helmetClosed && i === raw.length - 1;
+          if (tag === "SCRIPT") {
+            if (mayBePartial) continue;
+            const key = "SCRIPT|" + (child.getAttribute("src") || child.textContent || "");
+            if (mounted.has(key)) continue;
+            mounted.add(key);
+            const el = doc.createElement("script");
+            for (const { name: an, value } of [...child.attributes])
+              el.setAttribute(an, value);
+            if (child.textContent) el.textContent = child.textContent;
+            doc.head.appendChild(el);
+          } else if (tag === "LINK" || tag === "META") {
+            if (mayBePartial) continue;
+            const key = tag + "|" + (child.getAttribute("href") || child.getAttribute("src") || child.outerHTML);
+            if (mounted.has(key)) continue;
+            mounted.add(key);
+            if (tag === "LINK") {
+              const rel = (child.getAttribute("rel") || "").toLowerCase().split(/\s+/);
+              const href = (child.getAttribute("href") || "").trim();
+              const res = window.__resources;
+              const pre = res && rel.includes("stylesheet") && !rel.includes("alternate") ? res[href] : void 0;
+              const blob = typeof pre === "string" && pre ? bundledBlob(pre) : null;
+              if (blob) {
+                const el = doc.createElement("style");
+                if (child.hasAttribute("disabled")) {
+                  el.setAttribute("media", "not all");
+                } else if (child.getAttribute("media")) {
+                  el.setAttribute("media", child.getAttribute("media"));
+                }
+                if (child.getAttribute("title"))
+                  el.setAttribute("title", child.getAttribute("title"));
+                void blob.text().then((css) => {
+                  el.textContent = css;
+                });
+                doc.head.appendChild(el);
+                continue;
+              }
+            }
+            doc.head.appendChild(child.cloneNode(true));
+          } else {
+            const key = name + "|" + i;
+            let el = live.get(key);
+            if (!el || el.tagName !== tag) {
+              if (el) el.remove();
+              el = doc.createElement(tag.toLowerCase());
+              live.set(key, el);
+              doc.head.appendChild(el);
+            }
+            for (const { name: an, value } of [...child.attributes]) {
+              if (el.getAttribute(an) !== value) el.setAttribute(an, value);
+            }
+            if (el.textContent !== child.textContent)
+              el.textContent = child.textContent;
+          }
+        }
+        return null;
+      };
+    }
+    return { compile, setDesignDocMode };
+  }
+
+  // src/pseudo.ts
+  function scanUnquotedUrl(css, i) {
+    if (css[i] !== "u" && css[i] !== "U" || css.slice(i, i + 4).toLowerCase() !== "url(" || /[a-z0-9_-]/i.test(css[i - 1] ?? "")) {
+      return -1;
+    }
+    let j = i + 4;
+    while (j < css.length && /\s/.test(css[j])) j++;
+    if (css[j] === '"' || css[j] === "'") return -1;
+    while (j < css.length && css[j] !== ")") {
+      if (css[j] === "\\") j++;
+      j++;
+    }
+    return j < css.length ? j + 1 : css.length;
+  }
+  function stripComments(css) {
+    let out = "";
+    let quote = "";
+    for (let i = 0; i < css.length; i++) {
+      const c = css[i];
+      if (quote) {
+        if (c === "\\") {
+          out += c + (css[i + 1] ?? "");
+          i++;
+          continue;
+        }
+        if (c === quote) quote = "";
+        out += c;
+      } else if (c === "'" || c === '"') {
+        quote = c;
+        out += c;
+      } else if (c === "/" && css[i + 1] === "*") {
+        const end = css.indexOf("*/", i + 2);
+        i = end === -1 ? css.length : end + 1;
+        out += " ";
+      } else {
+        const end = scanUnquotedUrl(css, i);
+        if (end === -1) out += c;
+        else {
+          out += css.slice(i, end);
+          i = end - 1;
+        }
+      }
+    }
+    return out;
+  }
+  function importantify(css) {
+    css = stripComments(css);
+    const decls = [];
+    let start = 0;
+    let depth = 0;
+    let quote = "";
+    for (let i = 0; i < css.length; i++) {
+      const c = css[i];
+      if (quote) {
+        if (c === "\\") i++;
+        else if (c === quote) quote = "";
+      } else if (c === "'" || c === '"') quote = c;
+      else if (c === "(") depth++;
+      else if (c === ")") depth = Math.max(0, depth - 1);
+      else if (c === ";" && depth === 0) {
+        decls.push(css.slice(start, i));
+        start = i + 1;
+      } else {
+        const end = scanUnquotedUrl(css, i);
+        if (end !== -1) i = end - 1;
+      }
+    }
+    decls.push(css.slice(start));
+    return decls.map((d) => d.trim()).filter(Boolean).map((d) => /!\s*important$/i.test(d) ? d : d + " !important").join(";");
+  }
+  function createPseudoSheet(doc) {
+    let el = null;
+    const cache = /* @__PURE__ */ new Map();
+    let n = 0;
+    return (pseudo, css) => {
+      const k = pseudo + "|" + css;
+      const hit = cache.get(k);
+      if (hit) return hit;
+      if (!el) {
+        el = doc.createElement("style");
+        doc.head.appendChild(el);
+      }
+      const cls = "scp" + (n++).toString(36);
+      const isPseudoElement = pseudo === "before" || pseudo === "after";
+      const sel = isPseudoElement ? "." + cls + "::" + pseudo : "." + cls + ":" + pseudo;
+      el.sheet.insertRule(
+        sel + "{" + (isPseudoElement ? css : importantify(css)) + "}",
+        el.sheet.cssRules.length
+      );
+      cache.set(k, cls);
+      return cls;
+    };
+  }
+
+  // src/registry.ts
+  function createRegistry() {
+    const entries = /* @__PURE__ */ Object.create(null);
+    function get(name) {
+      return entries[name] || (entries[name] = {
+        html: "",
+        tpl: null,
+        Logic: null,
+        jsStreaming: false,
+        htmlStreaming: false,
+        ver: 0,
+        subs: /* @__PURE__ */ new Set(),
+        fetched: false
+      });
+    }
+    function bump(name) {
+      const r = get(name);
+      r.ver++;
+      for (const fn of r.subs) fn();
+    }
+    return {
+      entries,
+      get,
+      bump,
+      bumpAll() {
+        for (const n in entries) bump(n);
+      }
+    };
+  }
+
+  // src/runtime.ts
+  var COMPONENT_DIR = ".";
+  function createRuntime(doc = document) {
+    const registry = createRegistry();
+    const pseudoClass = createPseudoSheet(doc);
+    const helmet = createHelmetManager(
+      doc,
+      (name) => registry.get(name).htmlStreaming
+    );
+    const external = createExternalModules(() => registry.bumpAll());
+    const factory = createComponentFactory(registry, ensureFetched);
+    const host = {
+      component: (name) => factory.getDC(name),
+      placeholder: (props) => h(Placeholder, props),
+      helmet: (node) => helmet.compile(node),
+      loadExternal: (kind, url, after) => external.load(kind, url, after),
+      resolveExternal: (url, name) => external.resolve(url, name),
+      resolveExternalGlobal: (url, name) => external.resolveGlobal(url, name),
+      resolveExternalError: (url, name) => external.getError(url, name),
+      pseudoClass
+    };
+    function ensureFetched(name) {
+      const r = registry.get(name);
+      if (r.fetched) return;
+      r.fetched = true;
+      const url = COMPONENT_DIR + "/" + encodeURIComponent(name) + ".dc.html";
+      const res = window.__resources;
+      const pre = res ? res[url] : void 0;
+      const target = typeof pre === "string" && pre ? pre : url;
+      const blob = bundledBlob(target);
+      (blob ? blob.text() : fetch(target).then((res2) => {
+        if (!res2.ok) {
+          console.error(
+            '[dc-runtime] sibling fetch for "' + name + '" failed:',
+            url,
+            "returned",
+            res2.status,
+            "\u2014 the reference renders as an empty placeholder."
+          );
+          return "";
+        }
+        return res2.text();
+      })).then((t) => {
+        if (!t) return;
+        const parsed = parseDcText(t);
+        if (!parsed) {
+          console.error(
+            '[dc-runtime] sibling fetch for "' + name + '":',
+            url,
+            "has no <x-dc> block \u2014 not a Design Component."
+          );
+          return;
+        }
+        if (parsed.props) r.propsMeta = parsed.props;
+        if (parsed.preview) r.preview = parsed.preview;
+        if (parsed.template && !r.html) updateHtml(name, parsed.template);
+        if (parsed.js && !r.Logic) updateJs(name, parsed.js);
+      }).catch(
+        (e) => console.error(
+          '[dc-runtime] sibling fetch for "' + name + '" threw:',
+          url,
+          e
+        )
+      );
+    }
+    let rootName = null;
+    function updateHtml(name, html) {
+      const r = registry.get(name);
+      r.html = html;
+      if (name === rootName) {
+        const mode = DESIGN_DOC_MODE_RE.exec(html)?.[1] ?? null;
+        if (mode || !r.htmlStreaming) helmet.setDesignDocMode(mode);
+      }
+      try {
+        r.tpl = compileTemplate(html, host);
+      } catch (e) {
+        console.error("[dc-runtime] template compile FAILED for", name, e);
+      }
+      registry.bump(name);
+    }
+    function updateJs(name, src) {
+      const r = registry.get(name);
+      const seq = r.jsSeq = (r.jsSeq || 0) + 1;
+      try {
+        const Cls = evalDcLogic(src);
+        if (r.jsSeq !== seq) return;
+        if (typeof Cls !== "function") {
+          r.logicError = name + ".dc.html: <script data-dc-script> must define `class Component extends DCLogic`";
+        } else {
+          r.logicError = null;
+          r.Logic = Cls;
+        }
+      } catch (e) {
+        if (r.jsSeq !== seq) return;
+        console.error(
+          "[dc-runtime] logic class eval FAILED for",
+          name,
+          "\u2014 the template renders with props only.",
+          e
+        );
+        r.logicError = name + ": " + (e instanceof Error && e.message ? e.message : String(e));
+      }
+      registry.bump(name);
+    }
+    function setStreaming(name, kind, on) {
+      const r = registry.get(name);
+      if (kind === "html") r.htmlStreaming = !!on;
+      else r.jsStreaming = !!on;
+      let any = false;
+      for (const n in registry.entries) {
+        const e = registry.entries[n];
+        if (e && (e.htmlStreaming || e.jsStreaming)) {
+          any = true;
+          break;
+        }
+      }
+      doc.documentElement.classList.toggle("sc-dc-streaming", any);
+      registry.bump(name);
+    }
+    function dcUpdate(name, kind, content, streaming) {
+      if (streaming) registry.get(name).fetched = true;
+      if (kind === "html") {
+        setStreaming(name, "html", !!streaming);
+        updateHtml(name, content);
+      } else if (kind === "js") {
+        setStreaming(name, "js", !!streaming);
+        if (!streaming) updateJs(name, content);
+      } else if (kind === "props") {
+        const { props, preview } = parseDataProps(content);
+        const r = registry.get(name);
+        r.propsMeta = props ?? void 0;
+        r.preview = preview;
+        registry.bump(name);
+      }
+    }
+    function setProps(name, overrides) {
+      registry.get(name).propOverrides = overrides && typeof overrides === "object" ? { ...overrides } : null;
+      registry.bump(name);
+    }
+    function adoptParsed(name, parsed) {
+      if (!parsed) return;
+      const r = registry.get(name);
+      if (parsed.props) r.propsMeta = parsed.props;
+      if (parsed.preview) r.preview = parsed.preview;
+      if (parsed.template) updateHtml(name, parsed.template);
+      if (parsed.js) updateJs(name, parsed.js);
+    }
+    return {
+      registry,
+      getDC: factory.getDC,
+      updateHtml,
+      updateJs,
+      dcUpdate,
+      setProps,
+      adoptParsed,
+      setRootName: (name) => {
+        rootName = name;
+      },
+      markFetched: (name) => {
+        registry.get(name).fetched = true;
+      },
+      annotatedTemplate: (name) => {
+        const r = registry.get(name);
+        return r.tpl && r.tpl.__annotated || null;
+      },
+      templateSource: (name) => registry.get(name).html || null,
+      StreamableLogic
+    };
+  }
+
+  // src/stream-state.ts
+  function createStreamTracker(staleMs = 6e4, now = Date.now) {
+    const since = /* @__PURE__ */ new Map();
+    const liveOne = (n) => {
+      const t = since.get(n);
+      if (t === void 0) return false;
+      if (now() - t > staleMs) {
+        since.delete(n);
+        return false;
+      }
+      return true;
+    };
+    return {
+      push(name, streaming, viewportKey) {
+        if (viewportKey === "dc-model") return;
+        if (streaming) since.set(name, now());
+        else since.delete(name);
+      },
+      live(name) {
+        if (name !== void 0) return liveOne(name);
+        for (const n of [...since.keys()]) if (liveOne(n)) return true;
+        return false;
+      }
+    };
+  }
+
+  // src/index.ts
+  function hideRawTemplate() {
+    const s = document.createElement("style");
+    s.textContent = "x-dc{display:none!important}";
+    document.head.appendChild(s);
+  }
+  function loadScript(src, integrity) {
+    return new Promise((resolve2, reject) => {
+      //! nosemgrep: create-script-element
+      const s = document.createElement("script");
+      s.src = src;
+      if (integrity) {
+        s.integrity = integrity;
+        s.crossOrigin = "anonymous";
+      }
+      s.async = false;
+      s.onload = () => resolve2();
+      s.onerror = () => reject(new Error(`failed to load ${src}`));
+      document.head.appendChild(s);
+    });
+  }
+  function loadReactUmd() {
+    const w = window;
+    if (w.React && w.ReactDOM) return Promise.resolve();
+    const react = cdnScriptFor(REACT_URL, REACT_SRI);
+    const reactDom = cdnScriptFor(REACT_DOM_URL, REACT_DOM_SRI);
+    return Promise.all([
+      loadScript(react.src, react.integrity),
+      loadScript(reactDom.src, reactDom.integrity)
+    ]).then(() => void 0);
+  }
+  function init() {
+    const runtime = createRuntime(document);
+    let rootName = "Root";
+    const baseCss = document.createElement("style");
+    baseCss.textContent = BASE_CSS;
+    document.head.prepend(baseCss);
+    const notifyHost = () => {
+      if (window.parent === window) return;
+      const r = runtime.registry.entries[rootName];
+      try {
+        window.parent.postMessage(
+          {
+            type: "__dc_booted",
+            rootName,
+            propsMeta: r && r.propsMeta || null,
+            preview: r && r.preview || null
+          },
+          "*"
+        );
+      } catch {
+      }
+    };
+    const streams = createStreamTracker();
+    const api = {
+      __dcUpdate: (name, kind, content, streaming, viewportKey) => {
+        streams.push(name, streaming, viewportKey);
+        runtime.dcUpdate(name, kind, content, streaming);
+        if (name === rootName && !streaming && kind === "props") notifyHost();
+      },
+      __dcStreaming: (name) => streams.live(name),
+      __dcSetProps: (name, overrides) => runtime.setProps(name, overrides),
+      /** Name of the component currently mounted as the page root — DC tools
+       *  push their template-stream here when targeting "the open page". */
+      __dcRootName: () => rootName,
+      /** Editor bridge — the encoded, `data-dc-tpl`-annotated template source.
+       *  The host editor parses this into its own template DOM so it can map a
+       *  rendered node (carrying the same `data-dc-tpl`) back to the source
+       *  node that emitted it. Returns the encoded form (`sc-camel-*` attrs,
+       *  `<sc-raw-*>`/`<sc-helmet>` tags); the editor decodes on serialize. */
+      __dcAnnotatedTemplate: (name) => runtime.annotatedTemplate(name),
+      /** Editor bridge — the *original* (decoded) template source. */
+      __dcTemplateSource: (name) => runtime.templateSource(name),
+      __dcBoot: () => {
+        rootName = boot(runtime, document) ?? rootName;
+        notifyHost();
+      },
+      __dcRegistry: runtime.registry.entries,
+      getDC: (name) => runtime.getDC(name),
+      // `DCLogic` is the documented base class name; `StreamableLogic` is the
+      // implementation alias kept for any project that already references it.
+      DCLogic: runtime.StreamableLogic,
+      StreamableLogic: runtime.StreamableLogic
+    };
+    Object.assign(window, api);
+    window.__dcContentKeyed = true;
+    if (document.readyState !== "loading") api.__dcBoot();
+    else document.addEventListener("DOMContentLoaded", () => api.__dcBoot());
+  }
+  hideRawTemplate();
+  loadReactUmd().then(init).catch((err) => {
+    console.error("[dc] failed to load React or boot:", err);
+    throw err;
+  });
+})();

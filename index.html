@@ -1,330 +1,251 @@
-<!doctype html>
-<html lang="en">
-<head>
+<!DOCTYPE html>
+<html><head>
 <meta charset="utf-8">
-<title>The Storygen — Logistics</title>
-<script src="./vendor/react.js"></script>
-<script src="./vendor/react-dom.js"></script>
+<title>The Storygen</title>
+<script>window.__resources = {"https://unpkg.com/react@18.3.1/umd/react.production.min.js": "./vendor/react.js", "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "./vendor/react-dom.js"};</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 </head>
 <body>
+
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&amp;family=DM+Serif+Text&amp;display=swap">
-<style>
-body{margin:0;background:#EEF0EA}
-*{box-sizing:border-box}
-a{color:#2D1935}a:hover{color:#6F8B6E}
-.serif{font-family:'DM Serif Text',Georgia,serif;font-weight:400}
-.label{font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
-.glass{background:rgba(255,255,255,.12);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.28)}
-.glassdark{background:rgba(45,25,53,.34);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.24)}
-.bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;text-decoration:none;cursor:pointer}
-.btn-primary{background:#EEF0EA;color:#2D1935}.btn-primary:hover{background:#fff;color:#2D1935}
-.btn-glass{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.4)}.btn-glass:hover{background:rgba(255,255,255,.22);color:#fff}
-.btn-plum{background:#2D1935;color:#EEF0EA}.btn-plum:hover{background:#43284f;color:#fff}
-.navlink{color:#fff;text-decoration:none;font-size:14px}.navlink:hover{color:#FFD1B8}
-.field{width:100%;min-height:48px;padding:0 18px;border-radius:14px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px}
-.field::placeholder{color:rgba(255,255,255,.82)}
-@media (max-width:760px){.hide-sm{display:none !important}}
+<style>/* latin-ext */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/63513ba49ccad32a21d40131342e92ac.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/aef1c6b4d4a340241e022ca547e075ac.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./assets/fonts/63513ba49ccad32a21d40131342e92ac.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./assets/fonts/aef1c6b4d4a340241e022ca547e075ac.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("./assets/fonts/63513ba49ccad32a21d40131342e92ac.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("./assets/fonts/aef1c6b4d4a340241e022ca547e075ac.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'DM Serif Text';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/71a24b7188fb8590cfa9d434dc377f39.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'DM Serif Text';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/500b4b8dffdd124a343443c82b8eb036.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'DM Serif Text';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/0a1882b6a2544742b4aebacba17292e8.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'DM Serif Text';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/b6fbea2c7171ae3e236ecb989f54ba18.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 </style>
+<meta name="viewport" content="width=device-width,initial-scale=1"><style>img{max-width:100%}body{margin:0;overflow-x:hidden;background:#EEF0EA;font-family:'DM Sans',sans-serif;color:#1B2B27}a{color:#2D1935}a:hover{color:#6F8B6E}input::placeholder{color:#E4EAE5}html{scroll-behavior:smooth}</style>
 </helmet>
+<div style="position:relative;max-width:1440px;margin:0 auto;background:#EEF0EA">
 
-<div style="font-family: 'DM Sans', sans-serif; color: #2D1935; background: #EEF0EA; padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+<nav style="position:absolute;left:clamp(12px,2.2vw,32px);right:clamp(12px,2.2vw,32px);top:clamp(12px,1.7vw,24px);z-index:10;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:10px 10px 10px clamp(16px,2vw,28px);border-radius:99px;backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2);background:rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 0 1px rgba(255,255,255,.22);color:#FFFFFF">
+<div style="width:150px;aspect-ratio:990/162;background:#FFFFFF;-webkit-mask:url(&quot;./assets/b40ea14a64afd6355a3db86ecc2fd98f.svg&quot;) center/contain no-repeat;mask:url(&quot;./assets/b40ea14a64afd6355a3db86ecc2fd98f.svg&quot;) center/contain no-repeat"></div>
+<div style="display:flex;gap:28px;flex-wrap:wrap;font:500 14px/1 'DM Sans'">
+<a href="#services" style="color:#FFFFFF;text-decoration:none">Services</a>
+<a href="#geo" style="color:#FFFFFF;text-decoration:none">GEO</a>
+<a href="#proof" style="color:#FFFFFF;text-decoration:none">Clients</a>
+</div>
+<a href="https://plwqmgyuw0a.typeform.com/to/aRvOiqNF?typeform-source=thestorygen.com" target="_blank" rel="noopener" style="font:500 14px/1 'DM Sans';padding:14px 22px;border-radius:99px;background:#EEF0EA;color:#1B2B27;text-decoration:none">Book a strategy call</a>
+</nav>
 
-  <!-- HERO -->
-  <section style="position: relative; overflow: hidden; border-radius: 28px; min-height: 860px; color: #fff;">
-    <img class="bgimg" src="./assets/8f0ce25d8a627a7ab318969d6d5914e5.jpg" alt="" style="filter: blur(5px) saturate(1.05); transform: scale(1.06);">
-    <div style="position: absolute; inset: 0; background: rgba(45,25,53,.42); z-index: 0;"></div>
-    <div style="position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: 24px clamp(16px, 4vw, 40px) 56px; display: flex; flex-direction: column; gap: clamp(48px, 8vw, 96px);">
-      <nav class="glass" aria-label="Main" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 10px 10px 10px 24px; border-radius: 999px;">
-        <a href="#top" class="serif" style="color: #fff; text-decoration: none; font-size: 24px;">The Storygen</a>
-        <div class="hide-sm" style="display: flex; gap: 32px; align-items: center;">
-          <a class="navlink" href="#services">Services</a>
-          <a class="navlink" href="#crm">CRM + AI</a>
-          <a class="navlink" href="#pricing">Pricing</a>
-          <a class="navlink" href="#about">About</a>
-        </div>
-        <a class="btn btn-primary" href="#check" style="min-height: 44px; font-size: 14px;">Book a strategy call</a>
-      </nav>
+<section data-screen-label="Hero" style="position:relative;min-height:min(820px,100svh);overflow:hidden;background:#3C5A50;color:#FFFFFF;padding:clamp(150px,14vw,180px) clamp(20px,6.7vw,96px) 64px;box-sizing:border-box;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,3.3vw,48px);align-items:center">
+<img src="./assets/6a875c507d467965aee26d0329c992db.jpg" alt="" style="position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);object-fit:cover;object-position:50% 35%;filter:blur(10px) saturate(1.1)">
+<div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,16,36,.6) 0%,rgba(30,16,36,.2) 60%,rgba(30,16,36,.05) 100%)"></div>
+<div style="position:relative;display:flex;flex-direction:column;gap:26px">
+<span style="font:500 13px/1 'DM Sans';letter-spacing:.14em;text-transform:uppercase;color:#CFC9EA">AI search-first B2B growth agency</span>
+<h1 style="margin:0;font:400 clamp(38px,5.6vw,66px)/1.04 'DM Serif Text';text-wrap:pretty">Your buyers ask AI first. Make sure it says your name.</h1>
+<p style="margin:0;max-width:600px;font:400 19px/1.5 'DM Sans';color:#E4EAE5;text-wrap:pretty">We work next to founders and sales leaders to build the story, the social presence, the AI search visibility and the CRM that turn attention into pipeline. It all runs from one story, on one monthly rhythm.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+<a href="#check" style="font:500 16px/1 'DM Sans';padding:18px 28px;border-radius:99px;background:#EEF0EA;color:#1B2B27;text-decoration:none">Get my free AI visibility check</a>
+<a href="https://plwqmgyuw0a.typeform.com/to/aRvOiqNF?typeform-source=thestorygen.com" target="_blank" rel="noopener" style="font:500 16px/1 'DM Sans';padding:18px 28px;border-radius:99px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);background:rgba(255,255,255,.06);color:#FFFFFF;text-decoration:none">Book a strategy call</a>
+</div>
+</div>
+<div style="position:relative;padding:32px;border-radius:28px;backdrop-filter:blur(26px) saturate(1.2);-webkit-backdrop-filter:blur(26px) saturate(1.2);background:rgba(30,16,36,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.26),0 30px 60px rgba(0,0,0,.2);display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 12px/1 'DM Sans';letter-spacing:.14em;text-transform:uppercase;color:#FFD1B8">Free AI visibility check</span>
+<div style="display:flex;align-items:baseline;gap:12px"><span style="font:400 clamp(56px,6vw,72px)/.95 'DM Serif Text'">21+</span><span style="font:400 15px/1.35 'DM Sans';color:#E4EAE5;max-width:150px">real buyer prompts set your baseline</span></div></div>
+<div style="display:flex;flex-direction:column;padding-bottom:6px">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.18)"><span style="font:500 15px/1 'DM Sans'">ChatGPT</span><span style="display:flex;align-items:center;gap:8px;font:400 12px/1 'DM Sans';color:#E4EAE5"><span style="width:8px;height:8px;border-radius:50%;background:#FFD1B8"></span>Checked</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.18)"><span style="font:500 15px/1 'DM Sans'">Perplexity</span><span style="display:flex;align-items:center;gap:8px;font:400 12px/1 'DM Sans';color:#E4EAE5"><span style="width:8px;height:8px;border-radius:50%;background:#FFD1B8"></span>Checked</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.18)"><span style="font:500 15px/1 'DM Sans'">Claude</span><span style="display:flex;align-items:center;gap:8px;font:400 12px/1 'DM Sans';color:#E4EAE5"><span style="width:8px;height:8px;border-radius:50%;background:#FFD1B8"></span>Checked</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.18)"><span style="font:500 15px/1 'DM Sans'">Gemini</span><span style="display:flex;align-items:center;gap:8px;font:400 12px/1 'DM Sans';color:#E4EAE5"><span style="width:8px;height:8px;border-radius:50%;background:#FFD1B8"></span>Checked</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.18)"><span style="font:500 15px/1 'DM Sans'">Google AI Overviews</span><span style="display:flex;align-items:center;gap:8px;font:400 12px/1 'DM Sans';color:#E4EAE5"><span style="width:8px;height:8px;border-radius:50%;background:#FFD1B8"></span>Checked</span></div>
+</div>
+<a href="#check" style="text-align:center;font:500 14px/1 'DM Sans';padding:16px;border-radius:99px;background:#EEF0EA;color:#1B2B27;text-decoration:none">Run my check</a>
+</div>
+</section>
 
-      <div style="display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; justify-content: space-between;">
-        <div style="flex: 1 1 560px; max-width: 760px; display: flex; flex-direction: column; gap: 28px;">
-          <div class="label" style="color: #FFD1B8;">Brand, social selling, AI visibility &amp; CRM for logistics</div>
-          <h1 class="serif" style="margin: 0; font-size: clamp(44px, 6.2vw, 84px); line-height: 1.02; letter-spacing: -0.01em;">Visible to the shippers who buy. Cited by the engines they ask first.</h1>
-          <p style="margin: 0; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.55; max-width: 600px; color: rgba(255,255,255,.92);">We build the brand, the leadership presence on LinkedIn, the AI search visibility and the CRM that logistics companies need to be chosen — and to answer every lead, even after hours. One story, one monthly rhythm.</p>
-          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <a class="btn btn-primary" href="#check">Book a strategy call</a>
-            <a class="btn btn-glass" href="#pricing">See pricing</a>
-          </div>
-        </div>
-        <div style="flex: 0 1 340px; display: flex; flex-direction: column; gap: 16px;">
-          <div class="glass" style="border-radius: 22px; padding: 22px 24px; display: flex; flex-direction: column; gap: 6px;">
-            <div style="font-size: 13px; color: rgba(255,255,255,.88);">Leadership profiles vs. company page</div>
-            <div class="serif" style="font-size: 56px; line-height: 1;">~8x</div>
-            <div style="font-size: 14px; line-height: 1.5; color: rgba(255,255,255,.9);">more engagement on identical content. That gap is why we activate your people, not only your page.</div>
-          </div>
-          <div class="glass" style="border-radius: 22px; padding: 22px 24px; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-size: 13px; color: rgba(255,255,255,.88);">Tested across</div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <span style="padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.18); font-size: 13px;">ChatGPT</span>
-              <span style="padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.18); font-size: 13px;">Perplexity</span>
-              <span style="padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.18); font-size: 13px;">Claude</span>
-            </div>
-            <div style="font-size: 14px; color: rgba(255,255,255,.9);">21+ shipper prompts to set your AI visibility baseline.</div>
-          </div>
-        </div>
-      </div>
+<section style="padding:clamp(56px,6.7vw,96px) clamp(20px,6.7vw,96px) clamp(48px,5vw,72px);display:flex;flex-direction:column;gap:40px">
+<h2 style="margin:0;font:400 clamp(32px,4vw,52px)/1.05 'DM Serif Text'">What's slowing you down</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:40px">
+<div style="padding-top:24px;border-top:1px solid rgba(27,43,39,.2);display:flex;flex-direction:column;gap:12px"><span style="font:400 26px/1.1 'DM Serif Text'">AI recommends your competitors.</span><span style="font:400 15px/1.55 'DM Sans';color:#3A4D48">Buyers ask ChatGPT for a shortlist and your name isn't on it. We find out why and fix it.</span></div>
+<div style="padding-top:24px;border-top:1px solid rgba(27,43,39,.2);display:flex;flex-direction:column;gap:12px"><span style="font:400 26px/1.1 'DM Serif Text'">Your best salespeople are invisible online.</span><span style="font:400 15px/1.55 'DM Sans';color:#3A4D48">Founders and sales leaders close deals, but their profiles are silent. We give them a voice buyers already trust.</span></div>
+<div style="padding-top:24px;border-top:1px solid rgba(27,43,39,.2);display:flex;flex-direction:column;gap:12px"><span style="font:400 26px/1.1 'DM Serif Text'">Leads go cold after hours.</span><span style="font:400 15px/1.55 'DM Sans';color:#3A4D48">Inquiries sit until Monday. We set up a CRM and an AI agent that reply in minutes and pass warm leads to your team.</span></div>
+<div style="padding-top:24px;border-top:1px solid rgba(27,43,39,.2);display:flex;flex-direction:column;gap:12px"><span style="font:400 26px/1.1 'DM Serif Text'">Your brand looks like day one.</span><span style="font:400 15px/1.55 'DM Sans';color:#3A4D48">The company grew, but the website and the deck stayed the same. We make you look like the company you've become.</span></div>
+</div>
+</section>
 
-      <div class="label" style="display: flex; flex-wrap: wrap; gap: 12px 36px; color: rgba(255,255,255,.88); padding-top: 24px; border-top: 1px solid rgba(255,255,255,.24);">
-        <span>LinkedIn social selling</span><span>GEO</span><span>Branding</span><span>Websites</span><span>CRM + AI agents</span>
-      </div>
-    </div>
-  </section>
+<section id="services" style="padding:clamp(48px,5vw,72px) clamp(20px,6.7vw,96px) clamp(56px,6.7vw,96px);background:#EEF0EA;border-top:1px solid rgba(27,43,39,.1);display:flex;flex-direction:column;gap:clamp(28px,3.3vw,48px)">
+<div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center"><span style="font:500 13px/1 'DM Sans';letter-spacing:.14em;text-transform:uppercase;color:#6F8B6E">Our services</span><h2 style="margin:0;font:400 clamp(32px,4vw,52px)/1.05 'DM Serif Text'">Four services built on one story</h2><p style="margin:0;font:400 16px/1.5 'DM Sans';color:#3A4D48">Start with one, or let us run them together.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:28px">
+<div style="display:flex;flex-direction:column;gap:20px"><div style="aspect-ratio:1/1;background:#E2E6DF;display:flex;align-items:center;justify-content:center"><img src="./assets/5a512f6b6313316783559d845d04ae04.png" alt="" style="width:66%;height:66%;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(45,25,53,.22))"></div><div style="display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid rgba(27,43,39,.25)"><span style="font:400 26px/1.05 'DM Serif Text'">Branding + Website</span><span style="font:400 14px/1.5 'DM Sans';color:#3A4D48">Your story, your visual system and a site that turns visitors into conversations.</span></div></div>
+<div style="display:flex;flex-direction:column;gap:20px"><div style="aspect-ratio:1/1;background:#E2E6DF;display:flex;align-items:center;justify-content:center"><img src="./assets/5922b247542f5da3f7c68fa4d901a779.png" alt="" style="width:78%;height:70%;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(45,25,53,.22))"></div><div style="display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid rgba(27,43,39,.25)"><span style="font:400 26px/1.05 'DM Serif Text'">Social Selling</span><span style="font:400 14px/1.5 'DM Sans';color:#3A4D48">Your brand page and your leaders' profiles, saying one message in many voices.</span></div></div>
+<div style="display:flex;flex-direction:column;gap:20px"><div style="aspect-ratio:1/1;background:#E2E6DF;display:flex;align-items:center;justify-content:center"><img src="./assets/74056fbff992ec9ae31fe22409ec9b0b.png" alt="" style="width:62%;height:70%;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(45,25,53,.22))"></div><div style="display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid rgba(27,43,39,.25)"><span style="font:400 26px/1.05 'DM Serif Text'">GEO</span><span style="font:400 14px/1.5 'DM Sans';color:#3A4D48">Be the name ChatGPT, Perplexity and Google's AI recommend when buyers ask.</span></div></div>
+<div style="display:flex;flex-direction:column;gap:20px"><div style="aspect-ratio:1/1;background:#E2E6DF;display:flex;align-items:center;justify-content:center"><img src="./assets/f72e563853de1d72655c6e4ebd30f4cd.png" alt="" style="width:78%;height:70%;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(45,25,53,.22))"></div><div style="display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid rgba(27,43,39,.25)"><span style="font:400 26px/1.05 'DM Serif Text'">CRM + AI agents</span><span style="font:400 14px/1.5 'DM Sans';color:#3A4D48">Every lead captured, followed up and in your pipeline, even at 9 p.m.</span></div></div>
+</div>
+<div style="align-self:center;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;padding:20px 28px;border-radius:99px;background:#2D1935;color:#F3EEF2"><span style="font: 400 16px / 1.4 &quot;DM Sans&quot;;"><span style="font: 400 20px / 1 &quot;DM Serif Text&quot;;">One monthly rhythm.</span> Every month you get a content calendar, a performance report and a strategy session.</span></div>
+</section>
 
-  <!-- CLIENT STRIP -->
-  <section style="background: #fff; border-radius: 28px; padding: 32px clamp(20px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 20px 48px; align-items: center; justify-content: space-between;">
-    <div class="label" style="color: #6F8B6E; flex: 0 0 auto;">Built inside logistics</div>
-    <div class="serif" style="display: flex; flex-wrap: wrap; gap: 14px 40px; font-size: 22px; color: #2D1935;">
-      <span>Women in Logistics</span><span>Digital Permit Book</span><span>Zurich Transport</span><span>Lynxis</span><span>Celerik</span><span>MuvUp</span>
-    </div>
-  </section>
+<section id="geo" style="position:relative;overflow:hidden;background:#3C5A50;color:#FFFFFF;padding:clamp(56px,6.7vw,96px) clamp(20px,6.7vw,96px);display:flex;flex-direction:column;gap:40px">
+<img src="./assets/9076af2bcb186a026c0e26b292366e25.png" alt="" style="position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);object-fit:cover;filter:blur(18px) saturate(1.1)">
+<div style="position:absolute;inset:0;background:rgba(30,16,36,.35)"></div>
+<div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(28px,3.3vw,48px);align-items:end">
+<div style="display:flex;flex-direction:column;gap:20px"><span style="font:500 13px/1 'DM Sans';letter-spacing:.14em;text-transform:uppercase;color:#CFC9EA">New · AI search visibility</span><h2 style="margin:0;font:400 clamp(32px,4vw,52px)/1.05 'DM Serif Text';text-wrap:pretty">SEO got you ranked. AI decides who gets mentioned.</h2></div>
+<p style="margin:0;font:400 17px/1.55 'DM Sans';color:#E4EAE5">AI engines don't show ten links. They give one answer with three or four names in it. We find the questions your buyers ask, fix why you're missing, and publish the content AI engines cite.</p>
+</div>
+<div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px">
+<div style="padding:32px;border-radius:24px;backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2);background:rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.25);display:flex;flex-direction:column;gap:14px"><span style="font:400 clamp(40px,4.4vw,56px)/1 'DM Serif Text'">12.1%</span><span style="font:400 15px/1.5 'DM Sans';color:#E4EAE5">of Ahrefs' signups came from AI search, from only 0.5% of its traffic.</span><span style="margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);font:400 12px/1.4 'DM Sans';color:#CFC9EA">Ahrefs, June 2025</span></div>
+<div style="padding:32px;border-radius:24px;backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2);background:rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.25);display:flex;flex-direction:column;gap:14px"><span style="font:400 clamp(40px,4.4vw,56px)/1 'DM Serif Text'">15.9% <span style="font:400 28px/1 'DM Serif Text';color:#CFC9EA">vs 1.76%</span></span><span style="font:400 15px/1.5 'DM Sans';color:#E4EAE5">conversion rate of ChatGPT visitors vs. Google organic visitors, for one company over 7 months.</span><span style="margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);font:400 12px/1.4 'DM Sans';color:#CFC9EA">Seer Interactive, June 2025</span></div>
+<div style="padding:32px;border-radius:24px;backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2);background:rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.25);display:flex;flex-direction:column;gap:14px"><span style="font:400 clamp(40px,4.4vw,56px)/1 'DM Serif Text'">4.87% <span style="font:400 28px/1 'DM Serif Text';color:#CFC9EA">vs 4.6%</span></span><span style="font:400 15px/1.5 'DM Sans';color:#E4EAE5">AI vs. organic conversion across 54 websites, roughly the same.</span><span style="margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);font:400 12px/1.4 'DM Sans';color:#CFC9EA">Amsive via Search Engine Land</span></div>
+</div>
+</section>
 
-  <!-- WHY ONE PARTNER -->
-  <section style="position: relative; overflow: hidden; border-radius: 28px; color: #fff;">
-    <img class="bgimg" src="./assets/58e569ebcc622de51312d4c0d143c6ba.jpg" alt="" style="filter: blur(3px);">
-    <div style="position: absolute; inset: 0; background: rgba(45,25,53,.5); z-index: 0;"></div>
-    <div style="position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 56px); display: flex; flex-direction: column; gap: 48px;">
-      <div style="display: flex; flex-wrap: wrap; gap: 24px 64px; align-items: flex-end; justify-content: space-between;">
-        <div style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 16px;">
-          <div class="label" style="color: #FFD1B8;">Why one partner</div>
-          <h2 class="serif" style="margin: 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.08;">Most logistics agencies sell you one piece. Buyers see the whole picture.</h2>
-        </div>
-        <p style="flex: 1 1 340px; max-width: 440px; margin: 0; font-size: 17px; line-height: 1.55; color: rgba(255,255,255,.92);">A shipper reads your CEO on LinkedIn, asks an AI engine for a shortlist, visits your site and sends an inquiry at 9 p.m. Each step is a different vendor today. We run them from the same story.</p>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px;">
-        <div class="glassdark" style="border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 18px;">
-          <div class="label" style="color: rgba(255,255,255,.85);">The usual setup</div>
-          <div style="display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.45; color: rgba(255,255,255,.9);">
-            <div>One agency posts on the company page</div>
-            <div>Another runs SEO, maybe GEO</div>
-            <div>A HubSpot partner sets up a CRM nobody updates</div>
-            <div>After-hours inquiries wait until Monday</div>
-          </div>
-        </div>
-        <div style="border-radius: 24px; padding: 32px; background: #EEF0EA; color: #2D1935; display: flex; flex-direction: column; gap: 18px;">
-          <div class="label" style="color: #6F8B6E;">With The Storygen</div>
-          <div style="display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.45;">
-            <div><strong style="font-weight: 600;">Social selling</strong> — your leaders, one message, every week</div>
-            <div><strong style="font-weight: 600;">GEO</strong> — content AI engines can cite when shippers ask</div>
-            <div><strong style="font-weight: 600;">Brand + web</strong> — the story everything else repeats</div>
-            <div><strong style="font-weight: 600;">CRM + AI agents</strong> — every lead captured, 24/7</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<section style="padding:clamp(56px,6.7vw,96px) clamp(20px,6.7vw,96px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(28px,3.3vw,48px);align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px"><span style="font:500 13px/1 'DM Sans';letter-spacing:.14em;text-transform:uppercase;color:#6F8B6E">Why us</span><h2 style="margin:0;font:400 clamp(32px,4vw,52px)/1.05 'DM Serif Text'">We work inside your sales team.</h2></div>
+<p style="margin:0;font:400 19px/1.55 'DM Sans';color:#3A4D48;text-wrap:pretty">Most agencies report to marketing. We work directly with founders and Chief Commercial Officers, and every post, article and page is built to help close deals. Marketing becomes part of how you sell.</p>
+</section>
 
-  <!-- SERVICES -->
-  
+<section id="proof" style="padding:0 clamp(20px,6.7vw,96px) clamp(56px,6.7vw,96px);display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:18px;padding:28px 0;border-top:1px solid rgba(27,43,39,.15);border-bottom:1px solid rgba(27,43,39,.15)">
+<span style="font:500 13px/1 'DM Sans';letter-spacing:.14em;text-transform:uppercase;color:#4E6660">Brands we work with</span>
+<div style="display:flex;flex-wrap:wrap;gap:16px 40px;font:400 24px/1 'DM Serif Text';color:#2D1935"><span>Lynxis</span><span>TFWW</span><span>Alise</span><span>Buckeye Mountain</span><span>Celerik</span><span>MuvUp</span><span>Nubi</span><span>Digital Permit Book</span></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px">
+<figure style="margin:0;padding:32px;border-radius:24px;background:#FFFFFF;display:flex;flex-direction:column;justify-content:space-between;gap:24px"><blockquote style="margin:0;font:400 20px/1.35 'DM Serif Text'">"They're a small, customer-centric firm that delivers a high quality of service. Turnaround is fast, communication is strong, and the flexibility to scale services up or down has been a game changer."</blockquote><figcaption style="display:flex;flex-direction:column;gap:4px"><span style="font:500 15px/1.3 'DM Sans'">Allen Thomas</span><span style="font:400 13px/1.4 'DM Sans';color:#4E6660">Chief Commercial Officer, Lynxis</span></figcaption></figure>
+<figure style="margin:0;padding:32px;border-radius:24px;background:#FFFFFF;display:flex;flex-direction:column;justify-content:space-between;gap:24px"><blockquote style="margin:0;font:400 20px/1.35 'DM Serif Text'">"They deliver. You get more than what you pay for. The Storygen acted like an extension of our team, helping us build a strong foundation for the future."</blockquote><figcaption style="display:flex;flex-direction:column;gap:4px"><span style="font:500 15px/1.3 'DM Sans'">Tehquin Warrick</span><span style="font:400 13px/1.4 'DM Sans';color:#4E6660">Founder, Bluecrest Talent</span></figcaption></figure>
+<figure style="margin:0;padding:32px;border-radius:24px;background:#FFFFFF;display:flex;flex-direction:column;justify-content:space-between;gap:24px"><blockquote style="margin:0;font:400 20px/1.35 'DM Serif Text'">"If you don't have a marketing team, The Storygen is the easiest solution. Communication is easy, it doesn't break the bank, and they know how to build from scratch."</blockquote><figcaption style="display:flex;flex-direction:column;gap:4px"><span style="font:500 15px/1.3 'DM Sans'">Haig Melkonyan</span><span style="font:400 13px/1.4 'DM Sans';color:#4E6660">AiLO Logistics</span></figcaption></figure>
+</div>
+</section>
 
-  <!-- CRM + AI AGENTS -->
-  <section id="services" style="position: relative; overflow: hidden; border-radius: 28px;">
-    <img class="bgimg" src="./assets/9d5afc10e25745e386ab0ca8ef1fe026.jpg" alt="">
-    <div style="position: absolute; inset: 0; background: rgba(238,240,234,.28); z-index: 0;"></div>
-    <div style="position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 56px); display: flex; flex-direction: column; gap: 40px;">
-      <div style="display: flex; flex-wrap: wrap; gap: 16px 64px; align-items: flex-end; justify-content: space-between;">
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-          <div class="label" style="color: #2D1935;">Services</div>
-          <h2 class="serif" style="margin: 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.08;">Five services, one story</h2>
-        </div>
-        <p style="margin: 0; max-width: 400px; font-size: 17px; line-height: 1.55;">Each service starts from the same brand story and runs on the same monthly rhythm.</p>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px;">
-        <div style="position: relative; min-height: 280px; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; background: rgba(255,255,255,.55); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,.6);">
-          <img src="./assets/b59268160b9ebcd14d192ae2da7b7c90.webp" alt="" style="position: absolute; top: 24px; right: 28px; width: 96px; height: auto;">
-          <h3 class="serif" style="margin: 0; font-size: 30px;">Branding</h3>
-          <p style="margin: 0; font-size: 15px; line-height: 1.5;">Brand story, visual system and applications — trucks, decks, docks and LinkedIn.</p>
-        </div>
-        <div style="position: relative; min-height: 280px; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; background: rgba(255,255,255,.55); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,.6);">
-          <img src="./assets/5d4c8dd594e7750959f33f0b00c8783c.webp" alt="" style="position: absolute; top: 20px; right: 20px; width: 150px; height: auto;">
-          <h3 class="serif" style="margin: 0; font-size: 30px;">Social selling</h3>
-          <p style="margin: 0; font-size: 15px; line-height: 1.5;">Company page and leadership profiles on LinkedIn, plus enablement for your sales team. One message, many voices.</p>
-        </div>
-        <div style="position: relative; min-height: 280px; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; background: rgba(255,255,255,.55); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,.6);">
-          <img src="./assets/b492cff2762379d667b02ea45e07571f.webp" alt="" style="position: absolute; top: 20px; right: 24px; width: 104px; height: auto;">
-          <h3 class="serif" style="margin: 0; font-size: 30px;">GEO</h3>
-          <p style="margin: 0; font-size: 15px; line-height: 1.5;">Content built to be cited by ChatGPT, Perplexity and Claude when shippers ask who to call.</p>
-        </div>
-        <div style="position: relative; min-height: 280px; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; background: rgba(255,255,255,.55); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,.6);">
-          <div class="label" style="position: absolute; top: 28px; left: 28px; color: #6F8B6E;">Page by page</div>
-          <h3 class="serif" style="margin: 0; font-size: 30px;">Websites</h3>
-          <p style="margin: 0; font-size: 15px; line-height: 1.5;">Copy, UX/UI design and build — written for buyers and readable by AI engines.</p>
-        </div>
-        <div style="position: relative; min-height: 280px; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; background: rgba(255,255,255,.55); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,.6);">
-          <img src="./assets/33cdd203554c6395beafaf32c93b5561.webp" alt="" style="position: absolute; top: 20px; right: 20px; width: 140px; height: auto;">
-          <div class="label" style="position: absolute; top: 28px; left: 28px; padding: 5px 10px; border-radius: 999px; background: #2D1935; color: #FFD1B8; font-size: 11px;">New</div>
-          <h3 class="serif" style="margin: 0; font-size: 30px;">CRM + AI agents</h3>
-          <p style="margin: 0; font-size: 15px; line-height: 1.5;">Pipelines, follow-ups and a 24/7 agent on WhatsApp and web chat, under your brand.</p>
-        </div>
-        <div style="min-height: 280px; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; background: rgba(45,25,53,.82); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); color: #EEF0EA;">
-          <div class="label" style="color: #FFD1B8;">Underneath every service</div>
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <h3 class="serif" style="margin: 0; font-size: 30px;">One monthly rhythm</h3>
-            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: rgba(238,240,234,.9);">Content calendar, performance report and a strategy session, every month.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section><section id="crm" style="position: relative; overflow: hidden; border-radius: 28px; color: #fff;">
-    <img class="bgimg" src="./assets/972b99f8c789cea52d158180acdc55c7.jpg" alt="">
-    <div style="position: absolute; inset: 0; background: rgba(45,25,53,.52); z-index: 0;"></div>
-    <div style="position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 48px; align-items: center;">
-      <div style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 24px;">
-        <div class="label" style="color: #FFD1B8;">New · Storygen CRM + AI agents</div>
-        <h2 class="serif" style="margin: 0; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.05;">Nothing lost after hours.</h2>
-        <p style="margin: 0; font-size: 18px; line-height: 1.55; max-width: 560px; color: rgba(255,255,255,.92);">A full CRM, automation and AI agent system for a fraction of what enterprise CRMs cost. Shipment questions and new leads get answered 24/7, and your advisors pick up warm, not cold.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px;">
-          <div class="glass" style="border-radius: 18px; padding: 18px 20px; font-size: 15px; line-height: 1.45;"><strong style="font-weight: 600; display: block; margin-bottom: 4px;">24/7 tracking agent</strong>Answers shipment and service questions, then hands off to a person.</div>
-          <div class="glass" style="border-radius: 18px; padding: 18px 20px; font-size: 15px; line-height: 1.45;"><strong style="font-weight: 600; display: block; margin-bottom: 4px;">After-hours capture</strong>Inquiries are logged and assigned to sales the next business day.</div>
-          <div class="glass" style="border-radius: 18px; padding: 18px 20px; font-size: 15px; line-height: 1.45;"><strong style="font-weight: 600; display: block; margin-bottom: 4px;">Pipelines that fit</strong>Stages that match how you actually quote and close.</div>
-          <div class="glass" style="border-radius: 18px; padding: 18px 20px; font-size: 15px; line-height: 1.45;"><strong style="font-weight: 600; display: block; margin-bottom: 4px;">Monthly tuning</strong>We review conversations, fix answers and report response times.</div>
-        </div>
-      </div>
-      <div style="flex: 1 1 360px; max-width: 440px; margin: 0 auto;">
-        <div class="glass" style="border-radius: 28px; padding: 22px; display: flex; flex-direction: column; gap: 14px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(255,255,255,.88);">
-            <span>WhatsApp · 9:14 p.m.</span><span>Example conversation</span>
-          </div>
-          <div style="align-self: flex-end; max-width: 85%; padding: 12px 16px; border-radius: 18px 18px 4px 18px; background: #EEF0EA; color: #2D1935; font-size: 15px; line-height: 1.45;">Hi — can you quote a dry van from Laredo to Monterrey next Tuesday?</div>
-          <div style="align-self: flex-start; max-width: 85%; padding: 12px 16px; border-radius: 18px 18px 18px 4px; background: rgba(45,25,53,.72); font-size: 15px; line-height: 1.45;">Happy to help. How many pallets, and what's the pickup window? I'll send this to an advisor first thing tomorrow.</div>
-          <div style="align-self: flex-end; max-width: 85%; padding: 12px 16px; border-radius: 18px 18px 4px 18px; background: #EEF0EA; color: #2D1935; font-size: 15px; line-height: 1.45;">18 pallets, 8–11 a.m.</div>
-          <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: rgba(255,209,184,.2); border: 1px solid rgba(255,209,184,.5); font-size: 14px;">
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD1B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
-            Lead created · assigned to Sales, 8:00 a.m.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<section id="check" data-screen-label="Free AI visibility check" style="position:relative;min-height:min(640px,100svh);overflow:hidden;background:#3C5A50;color:#FFFFFF;padding:clamp(56px,6.7vw,96px) clamp(20px,6.7vw,96px);box-sizing:border-box;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(28px,3.3vw,48px);align-items:center">
+<img src="./assets/35e39783e7bc901d38d017e405280331.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%">
+<div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,16,36,.55) 0%,rgba(30,16,36,.1) 70%)"></div>
+<div style="position:relative;display:flex;flex-direction:column;gap:20px">
+<h2 style="margin:0;font:400 clamp(36px,4.6vw,60px)/1.04 'DM Serif Text';text-wrap:pretty">Does AI know your company?</h2>
+<p style="margin:0;max-width:520px;font:400 18px/1.55 'DM Sans';color:#E4EAE5;text-wrap:pretty">We'll run real buyer questions across the major AI engines and show you where you appear, and who appears instead. It's free and takes 2 minutes to request.</p>
+</div>
+<div style="position:relative;padding:clamp(22px,2.5vw,36px);border-radius:32px;backdrop-filter:blur(22px) saturate(1.2);-webkit-backdrop-filter:blur(22px) saturate(1.2);background:rgba(30,16,36,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.28),0 30px 60px rgba(0,0,0,.2);display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;justify-content:space-between;font:500 12px/1 'DM Sans';color:#E4EAE5"><span>Free AI visibility check</span><span>2 min</span></div>
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<input value="{{ email }}" sc-camel-on-change="{{ onEmail }}" placeholder="Work email" style="padding:16px 18px;border:0;outline:none;border-radius:14px;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);font:400 14px/1 'DM Sans';color:#FFFFFF" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)">
+<input value="{{ site }}" sc-camel-on-change="{{ onSite }}" placeholder="Company website" style="padding:16px 18px;border:0;outline:none;border-radius:14px;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);font:400 14px/1 'DM Sans';color:#FFFFFF" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)">
+<span sc-camel-on-click="{{ submit }}" style="margin-top:8px;text-align:center;font:500 15px/1 'DM Sans';padding:17px;border-radius:99px;background:#EEF0EA;color:#1B2B27;cursor:pointer" style-hover="filter:brightness(1.06)">Run my check</span>
+<span style="text-align:center;font:400 13px/1.4 'DM Sans';color:#E4EAE5">or <a href="https://plwqmgyuw0a.typeform.com/to/aRvOiqNF?typeform-source=thestorygen.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Book a strategy call</a></span>
+</sc-if>
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<h3 style="margin:8px 0 0;font:400 34px/1.05 'DM Serif Text'">Request received.</h3>
+<p style="margin:0;font:400 14px/1.5 'DM Sans';color:#E4EAE5">We'll run real buyer questions for {{ siteLabel }} and send the results to {{ emailLabel }}.</p>
+<span sc-camel-on-click="{{ reset }}" style="margin-top:8px;text-align:center;font:500 15px/1 'DM Sans';padding:16px;border-radius:99px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);cursor:pointer">Check another company</span>
+</sc-if>
+</div>
+</section>
 
-  <!-- PRICING -->
-  <section id="pricing" style="position: relative; overflow: hidden; border-radius: 28px; color: #fff;">
-    <img class="bgimg" src="./assets/6a875c507d467965aee26d0329c992db.jpg" alt="" style="filter: blur(8px); transform: scale(1.08);">
-    <div style="position: absolute; inset: 0; background: rgba(45,25,53,.55); z-index: 0;"></div>
-    <div style="position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 56px); display: flex; flex-direction: column; gap: 40px;">
-      <div style="display: flex; flex-wrap: wrap; gap: 16px 64px; align-items: flex-end; justify-content: space-between;">
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-          <div class="label" style="color: #FFD1B8;">Pricing</div>
-          <h2 class="serif" style="margin: 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.08;">Three ways to work with us</h2>
-        </div>
-        <p style="margin: 0; max-width: 420px; font-size: 16px; line-height: 1.55; color: rgba(255,255,255,.9);">Monthly retainers, 3-month minimum. Every plan includes a content calendar, a monthly report and strategy time.</p>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px;">
-        <div class="glass" style="border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px;">
-          <div><h3 class="serif" style="margin: 0 0 4px; font-size: 28px;">Foundation</h3><div style="font-size: 15px; color: rgba(255,255,255,.88);">One channel, done consistently.</div></div>
-          <div style="display: flex; align-items: baseline; gap: 6px;"><span class="serif" style="font-size: 48px;">$1,000</span><span style="font-size: 14px; color: rgba(255,255,255,.85);">/month</span></div>
-          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.24); flex-grow: 1;">
-            <div>8 LinkedIn posts per month</div><div>Company page + 1 leadership profile</div><div>Pre-approved template system</div><div>Quarterly pillar review</div>
-          </div>
-          <a class="btn btn-glass" href="#check">Start with Foundation</a>
-        </div>
-        <div class="glass" style="border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px;">
-          <div><h3 class="serif" style="margin: 0 0 4px; font-size: 28px;">OnDesign</h3><div style="font-size: 15px; color: rgba(255,255,255,.88);">Activate the people buyers trust.</div></div>
-          <div style="display: flex; align-items: baseline; gap: 6px;"><span class="serif" style="font-size: 48px;">$1,700</span><span style="font-size: 14px; color: rgba(255,255,255,.85);">/month</span></div>
-          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.24); flex-grow: 1;">
-            <div>12 posts across up to 3 leadership profiles</div><div>Optional second platform</div><div>10 hrs/month of sales enablement design</div><div>Website audit every 90 days</div><div>Monthly strategy session</div>
-          </div>
-          <a class="btn btn-glass" href="#check">Choose OnDesign</a>
-        </div>
-        <div style="border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 22px; background: #EEF0EA; color: #2D1935;">
-          <div><h3 class="serif" style="margin: 0 0 4px; font-size: 28px;">OnDesign + GEO</h3><div style="font-size: 15px; color: #4a3a52;">Be the answer AI engines give.</div></div>
-          <div style="display: flex; align-items: baseline; gap: 6px;"><span class="serif" style="font-size: 48px;">$2,800</span><span style="font-size: 14px; color: #4a3a52;">/month</span></div>
-          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; padding-top: 18px; border-top: 1px solid rgba(45,25,53,.16); flex-grow: 1;">
-            <div>Everything in OnDesign</div><div>21+ prompt AI visibility audit</div><div>6 GEO-optimized articles every 60 days</div><div>GEO dashboard + bi-weekly reporting</div>
-          </div>
-          <a class="btn btn-plum" href="#check">Choose OnDesign + GEO</a>
-        </div>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px;">
-        <div class="glass" style="border-radius: 20px; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between;">
-          <div style="font-size: 15px; line-height: 1.45;"><span class="serif" style="font-size: 20px;">CRM + AI agents.</span> Setup + monthly fee, quoted after discovery. [PRICE TBD]</div>
-          <a href="#crm" style="color: #FFD1B8; font-size: 14px;">How it works</a>
-        </div>
-        <div class="glass" style="border-radius: 20px; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between;">
-          <div style="font-size: 15px; line-height: 1.45;"><span class="serif" style="font-size: 20px;">Tailored.</span> A scope built from our catalog for needs that don't fit a standard plan.</div>
-          <a href="#check" style="color: #FFD1B8; font-size: 14px;">Talk to us</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" style="position: relative; overflow: hidden; border-radius: 28px; color: #fff;">
-    <img class="bgimg" src="./assets/35e39783e7bc901d38d017e405280331.jpg" alt="" style="filter: blur(14px); transform: scale(1.12);">
-    <div style="position: absolute; inset: 0; background: rgba(45,25,53,.45); z-index: 0;"></div>
-    <div style="position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 56px; align-items: center; justify-content: space-between;">
-      <div style="flex: 1 1 520px; max-width: 640px; display: flex; flex-direction: column; gap: 24px;">
-        <div class="label" style="color: #FFD1B8;">About The Storygen</div>
-        <h2 class="serif" style="margin: 0; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.05;">We bring what matters into focus.</h2>
-        <p style="margin: 0; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.92);">The Storygen is a brand and content studio for B2B companies, with deep roots in logistics. We start with the story: brand, message and pillars. Then we build what makes it visible and what keeps it working — from leadership profiles on LinkedIn to websites, content AI engines can cite, and the CRM that catches every lead.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 12px;">
-          <div class="glass" style="border-radius: 16px; padding: 16px 18px;"><div class="serif" style="font-size: 18px; line-height: 1.2;">Message → Form → Execution</div><div style="font-size: 13px; margin-top: 6px; color: rgba(255,255,255,.88);">Branding and websites</div></div>
-          <div class="glass" style="border-radius: 16px; padding: 16px 18px;"><div class="serif" style="font-size: 18px; line-height: 1.2;">One message, two channels</div><div style="font-size: 13px; margin-top: 6px; color: rgba(255,255,255,.88);">Social selling on LinkedIn</div></div>
-          <div class="glass" style="border-radius: 16px; padding: 16px 18px;"><div class="serif" style="font-size: 18px; line-height: 1.2;">Audit → Diagnosis → Execution</div><div style="font-size: 13px; margin-top: 6px; color: rgba(255,255,255,.88);">GEO and CRM</div></div>
-        </div>
-      </div>
-      <div style="flex: 0 1 360px; margin: 0 auto; position: relative; width: 360px; max-width: 100%; aspect-ratio: 645 / 683;">
-        <img src="./assets/a2ac3f5450fcf0211d92d572b3324e71.jpg" alt="Painting of a pond under a willow, in a gilded frame" style="position: absolute; left: 15%; top: 14%; width: 70%; height: 72%; object-fit: cover;">
-        <img src="./assets/b59268160b9ebcd14d192ae2da7b7c90.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;">
-      </div>
-    </div>
-  </section>
-
-  <!-- AI VISIBILITY CHECK -->
-  <section id="check" style="position: relative; overflow: hidden; border-radius: 28px; color: #fff;">
-    <img class="bgimg" src="./assets/7c8bb6a642bc0f3922cff997236b2810.jpg" alt="">
-    <div style="position: absolute; inset: 0; background: rgba(45,25,53,.32); z-index: 0;"></div>
-    <div style="position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: clamp(56px, 7vw, 112px) clamp(20px, 4vw, 56px); display: flex; justify-content: center;">
-      <form class="glass" style="width: 100%; max-width: 560px; border-radius: 28px; padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; gap: 18px;">
-        <div style="display: flex; justify-content: space-between; font-size: 13px; color: rgba(255,255,255,.9);"><span>Free AI visibility check</span><span>2 min</span></div>
-        <h2 class="serif" style="margin: 0; font-size: clamp(32px, 3.6vw, 46px); line-height: 1.08;">Does AI know your logistics company?</h2>
-        <p style="margin: 0; font-size: 16px; line-height: 1.55; color: rgba(255,255,255,.92);">We'll run a few shipper prompts across ChatGPT, Perplexity and Claude and show you where you appear — and who appears instead.</p>
-        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px;">Work email<input class="field" type="email" placeholder="you@company.com"></label>
-        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px;">Company website<input class="field" type="url" placeholder="yourcompany.com"></label>
-        <button class="btn btn-primary" type="button" style="border: 0; width: 100%;">Run my check</button>
-        <div style="font-size: 13px; color: rgba(255,255,255,.88); text-align: center;">Or <a href="#top" style="color: #FFD1B8;">book a strategy call</a> to talk it through.</div>
-      </form>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer style="background: #2D1935; color: #EEF0EA; border-radius: 28px; padding: 48px clamp(20px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: flex-end;">
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-      <div class="serif" style="font-size: 32px;">The Storygen</div>
-      <div style="font-size: 15px; color: rgba(238,240,234,.82);">Stories with roots. Reach for what's next.</div>
-    </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 14px;">
-      <a href="#services" style="color: #EEF0EA;">Services</a>
-      <a href="#crm" style="color: #EEF0EA;">CRM + AI</a>
-      <a href="#pricing" style="color: #EEF0EA;">Pricing</a>
-      <a href="#about" style="color: #EEF0EA;">About</a>
-      <a href="#check" style="color: #FFD1B8;">Book a strategy call</a>
-    </div>
-    <div style="width: 100%; font-size: 12px; color: rgba(238,240,234,.7); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; padding-top: 24px; border-top: 1px solid rgba(238,240,234,.16);">
-      <span>© 2026 The Storygen</span>
-      <span>Paintings: Claude Monet, Nenúfares, 1906 · and archive works</span>
-    </div>
-  </footer>
+<footer style="background:#2D1935;color:#F3EEF2;padding:48px clamp(20px,6.7vw,96px);display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap">
+<div style="width:180px;aspect-ratio:990/162;background:#FFFFFF;-webkit-mask:url(&quot;./assets/b40ea14a64afd6355a3db86ecc2fd98f.svg&quot;) center/contain no-repeat;mask:url(&quot;./assets/b40ea14a64afd6355a3db86ecc2fd98f.svg&quot;) center/contain no-repeat"></div>
+<p style="margin:0;max-width:560px;font:400 15px/1.55 'DM Sans';color:#D6CCDD">The Storygen is an AI search-first growth agency for B2B companies. We run GEO, social selling and CRM as one system, and our reports track leads and pipeline.</p>
+</div>
+<div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(238,240,234,.2)">
+<span style="font:400 22px/1.2 'DM Serif Text'">Stories with roots. Reach for what's next.</span>
+<span style="font:400 13px/1.4 'DM Sans';color:#A9B8AE">thestorygen.com</span>
+</div>
+</footer>
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":6400}}'>
+<script type="text/x-dc" data-dc-script="">
 class Component extends DCLogic {
-  renderVals() { return {}; }
+  state = { sent: false, email: '', site: '' };
+  renderVals() {
+    const s = this.state;
+    return {
+      email: s.email, site: s.site, sent: s.sent, notSent: !s.sent,
+      emailLabel: s.email || 'your inbox', siteLabel: s.site || 'your company',
+      onEmail: e => this.setState({ email: e.target.value }),
+      onSite: e => this.setState({ site: e.target.value }),
+      submit: () => this.setState({ sent: true }),
+      reset: () => this.setState({ sent: false, email: '', site: '' }),
+    };
+  }
 }
 </script>
-</body>
-</html>
+
+
+</body></html>
