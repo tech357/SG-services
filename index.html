@@ -206,7 +206,9 @@
 <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
 <input value="{{ email }}" sc-camel-on-change="{{ onEmail }}" placeholder="Work email" style="padding:16px 18px;border:0;outline:none;border-radius:14px;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);font:400 14px/1 'DM Sans';color:#FFFFFF" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)">
 <input value="{{ site }}" sc-camel-on-change="{{ onSite }}" placeholder="Company website" style="padding:16px 18px;border:0;outline:none;border-radius:14px;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);font:400 14px/1 'DM Sans';color:#FFFFFF" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)">
-<span sc-camel-on-click="{{ submit }}" style="margin-top:8px;text-align:center;font:500 15px/1 'DM Sans';padding:17px;border-radius:99px;background:#EEF0EA;color:#1B2B27;cursor:pointer" style-hover="filter:brightness(1.06)">Run my check</span>
+<input value="{{ hp }}" sc-camel-on-change="{{ onHp }}" name="company_name" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+<sc-if value="{{ error }}" hint-placeholder-val="{{ false }}"><span style="font:400 13px/1.4 'DM Sans';color:#FFD1B8">{{ error }}</span></sc-if>
+<span sc-camel-on-click="{{ submit }}" style="margin-top:8px;text-align:center;font:500 15px/1 'DM Sans';padding:17px;border-radius:99px;background:#EEF0EA;color:#1B2B27;cursor:pointer" style-hover="filter:brightness(1.06)">{{ submitLabel }}</span>
 <span style="text-align:center;font:400 13px/1.4 'DM Sans';color:#E4EAE5">or <a href="https://plwqmgyuw0a.typeform.com/to/aRvOiqNF?typeform-source=thestorygen.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Book a strategy call</a></span>
 </sc-if>
 <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
@@ -231,17 +233,43 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script="">
+// Google Apps Script web app URL (see apps-script/Code.gs).
+const LEADS_ENDPOINT = 'PASTE_YOUR_WEB_APP_URL_HERE';
+
 class Component extends DCLogic {
-  state = { sent: false, email: '', site: '' };
+  state = { sent: false, sending: false, error: '', email: '', site: '', hp: '' };
+  async submit() {
+    const s = this.state;
+    if (s.sending) return;
+    const email = s.email.trim(), site = s.site.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return this.setState({ error: 'Please enter a valid work email.' });
+    if (!site) return this.setState({ error: 'Please enter your company website.' });
+    this.setState({ sending: true, error: '' });
+    try {
+      // Form-encoded body keeps this a "simple" request, so no CORS preflight.
+      const res = await fetch(LEADS_ENDPOINT, {
+        method: 'POST',
+        body: new URLSearchParams({ email, site, company_name: s.hp, page: location.href, ua: navigator.userAgent }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error);
+      this.setState({ sending: false, sent: true });
+    } catch (err) {
+      this.setState({ sending: false, error: 'Something went wrong. Please try again.' });
+    }
+  }
   renderVals() {
     const s = this.state;
     return {
       email: s.email, site: s.site, sent: s.sent, notSent: !s.sent,
       emailLabel: s.email || 'your inbox', siteLabel: s.site || 'your company',
-      onEmail: e => this.setState({ email: e.target.value }),
-      onSite: e => this.setState({ site: e.target.value }),
-      submit: () => this.setState({ sent: true }),
-      reset: () => this.setState({ sent: false, email: '', site: '' }),
+      onEmail: e => this.setState({ email: e.target.value, error: '' }),
+      onSite: e => this.setState({ site: e.target.value, error: '' }),
+      onHp: e => this.setState({ hp: e.target.value }),
+      hp: s.hp, error: s.error,
+      submitLabel: s.sending ? 'Sending…' : 'Run my check',
+      submit: () => this.submit(),
+      reset: () => this.setState({ sent: false, error: '', email: '', site: '' }),
     };
   }
 }
